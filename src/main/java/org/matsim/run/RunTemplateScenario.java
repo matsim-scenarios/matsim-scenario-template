@@ -36,7 +36,7 @@ import java.util.List;
 // FIXME: Rename scenario
 public class RunTemplateScenario extends MATSimApplication {
 
-	static final String VERSION = "1.x";
+	static final String VERSION = "1.0";
 
 	@CommandLine.Mixin
 	private final SampleOptions sample = new SampleOptions(25, 10, 1);

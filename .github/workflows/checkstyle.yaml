@@ -18,12 +18,4 @@ jobs:
           cache: maven
 
       - name: Package
-        run: mvn --batch-mode --update-snapshots package -DskipTests -Dmatsim.preferLocalDtds=true -Dmaven.javadoc.skip -e
-      - run: mkdir staging && cp *.jar staging
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Package
-          path: staging
-
-    env:
-      MAVEN_OPTS: -Xmx10G
+        run: mvn --batch-mode --update-snapshots checkstyle:checkstyle

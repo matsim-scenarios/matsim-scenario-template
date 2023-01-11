@@ -9,7 +9,7 @@
         <param name="lastIteration" value="700"/>
         <param name="overwriteFiles" value="failIfDirectoryExists"/>
         <param name="runId" value="leipzig-25pct"/>
-        <param name="outputDirectory" value="./output/output-<name>-25pct"/>
+        <param name="outputDirectory" value="./output/output-[name]-25pct"/>
         <param name="writeEventsInterval" value="100"/>
         <param name="writePlansInterval" value="100"/>
         <param name="enableLinkToLinkRouting" value="false" />
@@ -23,13 +23,13 @@
     </module>
 
     <module name="network">
-        <param name="inputNetworkFile" value="<name>-network-with-pt.xml.gz"/>
+        <param name="inputNetworkFile" value="[name]-network-with-pt.xml.gz"/>
         <param name="laneDefinitionsFile" value="null" />
     </module>
 
     <module name="plans">
         <param name="inputPlansFile"
-               value="<name>-25pct.plans.xml.gz"/>
+               value="[name]-25pct.plans.xml.gz"/>
         <param name="removingUnnecessaryPlanAttributes" value="true"/>
     </module>
 
@@ -39,9 +39,9 @@
 
     <module name="transit">
         <param name="transitScheduleFile"
-               value="<name>-v1.0-transitSchedule.xml.gz"/>
+               value="[name]-v1.0-transitSchedule.xml.gz"/>
         <param name="vehiclesFile"
-               value="<name>-v1.0-transitVehicles.xml.gz"/>
+               value="[name]-v1.0-transitVehicles.xml.gz"/>
         <param name="useTransit" value="true"/>
     </module>
 

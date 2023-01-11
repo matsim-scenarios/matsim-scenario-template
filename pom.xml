@@ -1,0 +1,206 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>org.matsim</groupId>
+		<artifactId>matsim-all</artifactId>
+		<!-- Define MATSim version here -->
+		<!-- release -->
+		<!-- <matsim.version>13.0</matsim.version> -->
+
+		<!-- PR-labelled release -->
+		<!--<matsim.version>14.0-PR1452</matsim.version>-->
+
+		<!-- snapshot == not recommended: rather use PR-labelled release!-->
+		<version>15.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.matsim-scenarios</groupId>
+	<artifactId>matsim-template</artifactId>
+	<version>1.x-SNAPSHOT</version>
+
+	<name>MATSim Template Model</name>
+	<description>A transport model of template</description>
+
+	<properties>
+		<!-- FIXME: change main class -->
+		<main.class>org.matsim.run.RunTemplateScenario</main.class>
+
+		<!-- Don't modify, will use the same version as parent -->
+		<matsim.version>${project.parent.version}</matsim.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.release>17</maven.compiler.release>
+	</properties>
+
+	<dependencies>
+
+		<!-- Core dependencies, don't remove! -->
+		<dependency>
+			<groupId>org.matsim</groupId>
+			<artifactId>matsim</artifactId>
+			<version>${matsim.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.matsim.contrib</groupId>
+			<artifactId>application</artifactId>
+			<version>${matsim.version}</version>
+		</dependency>
+
+		<!-- Custom dependencies -->
+
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<!--MATSim test infrastructure.  Not transitive.-->
+			<groupId>org.matsim</groupId>
+			<artifactId>matsim</artifactId>
+			<type>test-jar</type>
+			<version>${matsim.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M7</version>
+				<configuration>
+					<forkMode>once</forkMode>
+					<!-- avoid out of memory errors: -->
+					<argLine>-Xmx9500m -Djava.awt.headless=true -Dmatsim.preferLocalDtds=true</argLine>
+					<!--necessary in tu berlin gitlab. BUT not good in other places, so solve by command line switch only where needed.  kai, nov'18-->
+					<!--<useSystemClassLoader>false</useSystemClassLoader>-->
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!--				The maven-shade-plugin replaces the maven-assembly-plugin to configure "mvn package". The assembly-plugin regularly-->
+				<!--				creates problems when GeoTools are used, which the shade-plugin does not (see-->
+				<!--				https://stackoverflow.com/questions/27429097/geotools-cannot-find-hsql-epsg-db-throws-error-nosuchauthoritycodeexception/27431381#27431381)-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.4.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<outputFile>${project.basedir}/${project.build.finalName}.jar</outputFile>
+							<transformers>
+								<!-- The following sets the main class for the executable jar as you otherwise would with the assembly plugin -->
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>${main.class}</Main-Class>
+										<Specification-Vendor>org.matsim</Specification-Vendor>
+										<Implementation-Vendor>org.matsim</Implementation-Vendor>
+										<Implementation-Version>${project.version}</Implementation-Version>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</transformer>
+								<!-- The following merges the various GeoTools META-INF/services files         -->
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+							</transformers>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.RSA</exclude>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>10.6.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<encoding>UTF-8</encoding>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<failOnViolation>true</failOnViolation>
+					<linkXRef>false</linkXRef>
+				</configuration>
+				<executions>
+					<execution>
+						<id>checkstyle</id>
+						<phase>package</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<repositories>
+		<!--Note that in general repositories are not transitive, so they need to be repeated at every level where needed.-->
+		<repository>
+			<!-- Geotools is not on Maven central -->
+			<id>osgeo</id>
+			<name>Geotools repository</name>
+			<url>https://repo.osgeo.org/repository/release/</url>
+		</repository>
+		<repository>
+			<!-- Repository for MATSim (MATSim is not on Maven central, releases and snapshots) -->
+			<id>matsim</id>
+			<url>https://repo.matsim.org/repository/matsim</url>
+		</repository>
+		<!-- for dependencies of osm-network-reader -->
+		<repository>
+			<id>topobyte</id>
+			<url>https://mvn.topobyte.de</url>
+		</repository>
+		<!-- for dependencies of osm-network-reader -->
+		<repository>
+			<id>slimjars</id>
+			<url>https://mvn.slimjars.com</url>
+		</repository>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+</project>

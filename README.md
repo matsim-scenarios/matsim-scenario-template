@@ -12,12 +12,13 @@
 
 When using this template make sure to adapt it as needed:
 
-- [ ] Rename Run-Class in `src` folder
+- [ ] Rename Run-Class in `src/main/java` folder
 - [ ] Update pom.xml
   - [ ] Name, description and version
   - [ ] Main class
 - [ ] Makefile
 - [ ] Update CITATION.cff (Authors and version)
+- [ ] Modify calibration.py in `src/main/python`
 - [ ] Update README.md (This file)
   - [ ] Change Name and URLs
   - [ ] Badges

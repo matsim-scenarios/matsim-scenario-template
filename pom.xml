@@ -35,6 +35,14 @@
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/matsim-scenarios/matsim-template-scenario</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 
 		<!-- Core dependencies, don't remove! -->

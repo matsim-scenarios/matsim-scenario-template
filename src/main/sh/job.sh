@@ -6,10 +6,12 @@
 #$ -cwd
 #$ -pe mp 8
 #$ -l mem_free=6G
-#$ -N
+#$ -N run-scenario
 
 date
 hostname
+
+# FIXME: Update scenario params
 
 jar="matsim-template-1.x-SNAPSHOT.jar"
 memory="${RUN_MEMORY:-46G}"

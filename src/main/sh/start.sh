@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Helper script to start one or multiple jobs and pass arguments to it
+
 name=$( echo "$*" | sed -e 's/ //g' -e 's/--//g')
 
 export RUN_ARGS="$*"

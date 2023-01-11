@@ -13,6 +13,7 @@
 When using this template make sure to adapt it as needed:
 
 - [ ] Rename Run-Class in `src/main/java` folder
+- [ ] Modify config in `input`
 - [ ] Update pom.xml
   - [ ] Name, description and version
   - [ ] Main class

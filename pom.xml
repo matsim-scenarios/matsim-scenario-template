@@ -12,6 +12,7 @@
 		<!--<matsim.version>14.0-PR1452</matsim.version>-->
 
 		<!-- snapshot == not recommended: rather use PR-labelled release!-->
+		<!-- FIXME: Decide on version -->
 		<version>15.0-SNAPSHOT</version>
 	</parent>
 
@@ -39,6 +40,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
+			<!-- FIXME: Update Repo -->
 			<url>https://maven.pkg.github.com/matsim-scenarios/matsim-template-scenario</url>
 		</repository>
 	</distributionManagement>

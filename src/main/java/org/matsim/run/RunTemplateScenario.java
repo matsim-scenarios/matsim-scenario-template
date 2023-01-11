@@ -48,7 +48,7 @@ public class RunTemplateScenario extends MATSimApplication {
 
 	// FIXME: update config path
 	public RunTemplateScenario() {
-		super(String.format("scenarios/input/template-v%s-25pct.config.xml", VERSION));
+		super(String.format("input/v%s/template-v%s-25pct.config.xml", VERSION, VERSION));
 	}
 
 	public static void main(String[] args) {

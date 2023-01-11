@@ -14,11 +14,11 @@ $(JAR):
 	mvn package
 
 # Required files
-scenarios/input/network.osm.pbf:
+input/network.osm.pbf:
 	curl https://download.geofabrik.de/europe/germany-210701.osm.pbf\
-	  -o scenarios/input/network.osm.pbf
+	  -o input/network.osm.pbf
 
-scenarios/input/network.osm: scenarios/input/network.osm.pbf
+input/network.osm: input/network.osm.pbf
 
 	# FIXME: Adjust level of details and area
 
@@ -50,7 +50,7 @@ scenarios/input/network.osm: scenarios/input/network.osm.pbf
 	rm network-germany.osm.pbf
 
 
-scenarios/input/sumo.net.xml: scenarios/input/network.osm
+input/sumo.net.xml: input/network.osm
 
 	$(SUMO_HOME)/bin/netconvert --geometry.remove --ramps.guess --ramps.no-split\
 	 --type-files $(SUMO_HOME)/data/typemap/osmNetconvert.typ.xml,$(SUMO_HOME)/data/typemap/osmNetconvertUrbanDe.typ.xml\
@@ -64,9 +64,11 @@ scenarios/input/sumo.net.xml: scenarios/input/network.osm
 	 --osm-files $< -o=$@
 
 
-scenarios/input/$N-$V-network.xml.gz: scenarios/input/sumo.net.xml
+input/$V/$N-$V-network.xml.gz: input/sumo.net.xml
 	java -jar $(JAR) prepare network-from-sumo $<\
 	 --output $@
+
+	# FIXME: Adjust
 
 	java -jar $(JAR) prepare network\
      --shp ../public-svn/matsim/scenarios/countries/de/$N/shp/prepare-network/av-and-drt-area.shp\
@@ -74,7 +76,7 @@ scenarios/input/$N-$V-network.xml.gz: scenarios/input/sumo.net.xml
 	 --output $@
 
 
-scenarios/input/$N-$V-network-with-pt.xml.gz: scenarios/input/$N-$V-network.xml.gz
+input/$V/$N-$V-network-with-pt.xml.gz: input/$V/$N-$V-network.xml.gz
 	# FIXME: Adjust GTFS
 
 	java -Xmx20G -jar $(JAR) prepare transit-from-gtfs --network $<\
@@ -87,7 +89,7 @@ scenarios/input/$N-$V-network-with-pt.xml.gz: scenarios/input/$N-$V-network.xml.
 	 --shp ../shared-svn/projects/$N/data/Bayern.zip\
 	 --shp ../shared-svn/projects/$N/data/germany-area/germany-area.shp\
 
-scenarios/input/freight-trips.xml.gz: scenarios/input/$N-$V-network.xml.gz
+input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 	# FIXME: Adjust path
 
 	java -jar $(JAR) prepare extract-freight-trips ../shared-svn/projects/german-wide-freight/v1.2/german-wide-freight-25pct.xml.gz\
@@ -97,7 +99,7 @@ scenarios/input/freight-trips.xml.gz: scenarios/input/$N-$V-network.xml.gz
 	 --shp ../shared-svn/projects/$N.shp --shp-crs $(CRS)\
 	 --output $@
 
-scenarios/input/$N-$V-25pct.plans.xml.gz: scenarios/input/freight-trips.xml.gz scenarios/input/$N-$V-network.xml.gz
+input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz
 	java -jar $(JAR) prepare trajectory-to-plans\
 	 --name prepare --sample-size 0.25\
 	 --population ../shared-svn/projects/$N/matsim-input-files/population.xml.gz\
@@ -132,11 +134,11 @@ scenarios/input/$N-$V-25pct.plans.xml.gz: scenarios/input/freight-trips.xml.gz s
     	 --samples 0.1 0.01\
 
 
-check: scenarios/input/$N-$V-25pct.plans.xml.gz
+check: input/$V/$N-$V-25pct.plans.xml.gz
 	java -jar $(JAR) analysis check-population $<\
  	 --input-crs $(CRS)\
  	 --shp ../shared-svn/projects/$N/matsim-input-files/$N.shp --shp-crs $(CRS)
 
 # Aggregated target
-prepare: scenarios/input/$N-$V-25pct.plans.xml.gz scenarios/input/$N-$V-network-with-pt.xml.gz
+prepare: input/$V/$N-$V-25pct.plans.xml.gz input/$V/$N-$V-network-with-pt.xml.gz
 	echo "Done"

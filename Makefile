@@ -92,7 +92,7 @@ input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 	 --network ../shared-svn/projects/german-wide-freight/original-data/german-primary-road.network.xml.gz\
 	 --input-crs EPSG:5677\
 	 --target-crs $(CRS)\
-	 --shp ../shared-svn/projects/$N.shp --shp-crs $(CRS)\
+	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
 	 --output $@
 
 input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz
@@ -102,28 +102,28 @@ input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-net
 	 --attributes  ../shared-svn/projects/$N/matsim-input-files/personAttributes.xml.gz
 
 	java -jar $(JAR) prepare resolve-grid-coords\
-	 scenarios/input/prepare-25pct.plans.xml.gz\
+	 input/prepare-25pct.plans.xml.gz\
 	 --input-crs $(CRS)\
 	 --grid-resolution 300\
 	 --landuse ../matsim-leipzig/scenarios/input/landuse/landuse.shp\
-	 --output scenarios/input/prepare-25pct.plans.xml.gz
+	 --output input/prepare-25pct.plans.xml.gz
 
-	java -jar $(JAR) prepare population scenarios/input/prepare-25pct.plans.xml.gz\
-	 --output scenarios/input/prepare-25pct.plans.xml.gz
+	java -jar $(JAR) prepare population input/prepare-25pct.plans.xml.gz\
+	 --output input/prepare-25pct.plans.xml.gz
 
 	java -jar $(JAR) prepare generate-short-distance-trips\
- 	 --population scenarios/input/prepare-25pct.plans.xml.gz\
+ 	 --population input/prepare-25pct.plans.xml.gz\
  	 --input-crs $(CRS)\
- 	 --shp ../shared-svn/projects/$N/matsim-input-files/$N.shp --shp-crs $(CRS)\
- 	 --num-trips 15216
+	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
+ 	 --num-trips 111111 # FIXME
 
-	java -jar $(JAR) prepare xy-to-links --network scenarios/input/$N-$V-network.xml.gz --input scenarios/input/prepare-25pct.plans-with-trips.xml.gz --output $@
+	java -jar $(JAR) prepare xy-to-links --network input/$N-$V-network.xml.gz --input input/prepare-25pct.plans-with-trips.xml.gz --output $@
 
 	java -jar $(JAR) prepare fix-subtour-modes --input $@ --output $@
 
 	java -jar $(JAR) prepare merge-populations $@ $< --output $@
 
-	java -jar $(JAR) prepare extract-home-coordinates $@ --csv scenarios/input/$N-$V-homes.csv
+	java -jar $(JAR) prepare extract-home-coordinates $@ --csv input/$V/$N-$V-homes.csv
 
 	java -jar $(JAR) prepare downsample-population $@\
     	 --sample-size 0.25\
@@ -133,7 +133,7 @@ input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-net
 check: input/$V/$N-$V-25pct.plans.xml.gz
 	java -jar $(JAR) analysis check-population $<\
  	 --input-crs $(CRS)\
- 	 --shp ../shared-svn/projects/$N/matsim-input-files/$N.shp --shp-crs $(CRS)
+	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)
 
 # Aggregated target
 prepare: input/$V/$N-$V-25pct.plans.xml.gz input/$V/$N-$V-network-with-pt.xml.gz

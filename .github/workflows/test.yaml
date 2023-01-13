@@ -3,7 +3,7 @@ name: build
 on: [ push, pull_request ]
 
 jobs:
-  build:
+  test:
     #run if push or pull_requests from fork
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
@@ -24,11 +24,11 @@ jobs:
           cache: maven
 
       - name: Test
-        run: mvn --batch-mode --update-snapshots tests -Dmatsim.preferLocalDtds=true -Dmaven.javadoc.skip -e
+        run: mvn --batch-mode --update-snapshots test -Dmatsim.preferLocalDtds=true -Dmaven.javadoc.skip -e
       - uses: actions/upload-artifact@v3
         with:
-          name: jacoco-report
-          path: reports/jacoco/
+          name: test-coverage
+          path: target/site/jacoco/
 
     env:
       MAVEN_OPTS: -Xmx10G

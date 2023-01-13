@@ -3,7 +3,7 @@ name: build
 on: [ push, pull_request ]
 
 jobs:
-  build:
+  checkstyle:
     #run if push or pull_requests from fork
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 

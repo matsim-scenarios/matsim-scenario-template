@@ -100,7 +100,7 @@
 				<configuration>
 					<forkMode>once</forkMode>
 					<!-- avoid out of memory errors: -->
-					<argLine>-Xmx9500m -Djava.awt.headless=true -Dmatsim.preferLocalDtds=true</argLine>
+					<argLine>@{argLine} -Xmx9500m -Djava.awt.headless=true -Dmatsim.preferLocalDtds=true</argLine>
 					<!--necessary in tu berlin gitlab. BUT not good in other places, so solve by command line switch only where needed.  kai, nov'18-->
 					<!--<useSystemClassLoader>false</useSystemClassLoader>-->
 				</configuration>
@@ -118,7 +118,7 @@
 					</execution>
 					<execution>
 						<id>report</id>
-						<phase>prepare-package</phase>
+						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
@@ -183,7 +183,6 @@
 				</dependencies>
 				<configuration>
 					<configLocation>checkstyle.xml</configLocation>
-					<encoding>UTF-8</encoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
 					<failOnViolation>true</failOnViolation>

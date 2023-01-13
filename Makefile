@@ -5,7 +5,7 @@ CRS := EPSG:25832
 
 JAR := matsim-$(N)-*.jar
 
-export SUMO_HOME := $(abspath ../../sumo-1.8.0/)
+export SUMO_HOME := $(abspath ../../sumo-1.15.0/)
 osmosis := osmosis\bin\osmosis
 
 .PHONY: prepare
@@ -23,28 +23,24 @@ input/network.osm: input/network.osm.pbf
 	# FIXME: Adjust level of details and area
 
 	$(osmosis) --rb file=$<\
-	 --tf accept-ways highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary_link,secondary,tertiary,motorway_junction,residential,unclassified,living_street,service\
-	 --bounding-box top=48.977 left=11.779 bottom=48.854 right=12.019\
-	 --used-node --wb network-service.osm.pbf
-
-	$(osmosis) --rb file=$<\
-	 --tf accept-ways highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary_link,secondary,tertiary,motorway_junction,residential,unclassified,living_street\
-	 --bounding-box top=48.994 left=11.574 bottom=48.584 right=12.095\
+	 --tf accept-ways bicycle=yes highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary_link,secondary,tertiary,motorway_junction,residential,unclassified,living_street\
+	 --bounding-box top=51.457 left=12.137 bottom=51.168 right=12.703\
 	 --used-node --wb network-detailed.osm.pbf
 
 	$(osmosis) --rb file=$<\
 	 --tf accept-ways highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary_link,secondary,tertiary,motorway_junction\
-	 --bounding-box top=49.08 left=11.31 bottom=48.50 right=12.24\
+	 --bounding-box top=51.92 left=11.45 bottom=50.83 right=13.36\
 	 --used-node --wb network-coarse.osm.pbf
 
 	$(osmosis) --rb file=$<\
 	 --tf accept-ways highway=motorway,motorway_link,motorway_junction,trunk,trunk_link,primary,primary_link\
 	 --used-node --wb network-germany.osm.pbf
 
-	$(osmosis) --rb file=network-service.osm.pbf --rb file=network-germany.osm.pbf --rb file=network-coarse.osm.pbf --rb file=network-detailed.osm.pbf\
-  	 --merge --merge --merge --wx $@
+	$(osmosis) --rb file=network-germany.osm.pbf --rb file=network-coarse.osm.pbf --rb file=network-detailed.osm.pbf\
+  	 --merge --merge\
+  	 --tag-transform file=input/remove-railway.xml\
+  	 --wx $@
 
-	rm network-service.osm.pbf
 	rm network-detailed.osm.pbf
 	rm network-coarse.osm.pbf
 	rm network-germany.osm.pbf

@@ -1,5 +1,5 @@
 #!/bin/bash --login
-#$ -l h_rt=732000
+#$ -l h_rt=790000
 #$ -j y
 #$ -m a
 #$ -o ./logfile/logfile_$JOB_NAME.log

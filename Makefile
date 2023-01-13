@@ -97,7 +97,7 @@ input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 
 input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz
 	java -jar $(JAR) prepare trajectory-to-plans\
-	 --name prepare --sample-size 0.25\
+	 --name prepare --sample-size 0.25 --output input\
 	 --population ../shared-svn/projects/$N/matsim-input-files/population.xml.gz\
 	 --attributes  ../shared-svn/projects/$N/matsim-input-files/personAttributes.xml.gz
 

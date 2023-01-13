@@ -95,29 +95,34 @@ input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
 	 --output $@
 
-input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz
+input/$V/prepare-25pct.plans.xml.gz:
 	java -jar $(JAR) prepare trajectory-to-plans\
-	 --name prepare --sample-size 0.25 --output input\
+	 --name prepare --sample-size 0.25 --output input/$V\
 	 --population ../shared-svn/projects/$N/matsim-input-files/population.xml.gz\
 	 --attributes  ../shared-svn/projects/$N/matsim-input-files/personAttributes.xml.gz
 
 	java -jar $(JAR) prepare resolve-grid-coords\
-	 input/prepare-25pct.plans.xml.gz\
+	 input/$V/prepare-25pct.plans.xml.gz\
 	 --input-crs $(CRS)\
 	 --grid-resolution 300\
 	 --landuse ../matsim-leipzig/scenarios/input/landuse/landuse.shp\
-	 --output input/prepare-25pct.plans.xml.gz
+	 --output $@
 
-	java -jar $(JAR) prepare population input/prepare-25pct.plans.xml.gz\
-	 --output input/prepare-25pct.plans.xml.gz
-
+input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz input/$V/prepare-25pct.plans.xml.gz
 	java -jar $(JAR) prepare generate-short-distance-trips\
- 	 --population input/prepare-25pct.plans.xml.gz\
+ 	 --population input/$V/prepare-25pct.plans.xml.gz\
  	 --input-crs $(CRS)\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
  	 --num-trips 111111 # FIXME
 
-	java -jar $(JAR) prepare xy-to-links --network input/$N-$V-network.xml.gz --input input/prepare-25pct.plans-with-trips.xml.gz --output $@
+	java -jar $(JAR) prepare adjust-activity-to-link-distances input/$V/prepare-25pct.plans-with-trips.xml.gz\
+	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
+     --scale 1.15\
+     --input-crs $(CRS)\
+     --network input/$V/$N-$V-network.xml.gz\
+     --output input/$V/prepare-25pct.plans-adj.xml.gz
+
+	java -jar $(JAR) prepare xy-to-links --network input/$V/$N-$V-network.xml.gz --input input/$V/prepare-25pct.plans-adj.xml.gz --output $@
 
 	java -jar $(JAR) prepare fix-subtour-modes --input $@ --output $@
 

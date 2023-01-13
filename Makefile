@@ -6,7 +6,7 @@ CRS := EPSG:25832
 JAR := matsim-$(N)-*.jar
 
 export SUMO_HOME := $(abspath ../../sumo-1.15.0/)
-osmosis := osmosis\bin\osmosis
+osmosis := osmosis/bin/osmosis
 
 .PHONY: prepare
 

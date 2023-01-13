@@ -29,11 +29,11 @@ When using this template make sure to adapt it as needed:
 
 ### About this project
 
-This repository provides an open MATSim transport model for Leipzig, provided by the [Transport Systems Planning and Transport Telematics group](https://www.vsp.tu-berlin.de) of [Technische Universität Berlin](http://www.tu-berlin.de).
+This repository provides an open MATSim transport model for [name], provided by the [Transport Systems Planning and Transport Telematics group](https://www.vsp.tu-berlin.de) of [Technische Universität Berlin](http://www.tu-berlin.de).
 
 <a rel="TU Berlin" href="https://www.vsp.tu-berlin.de"><img src="https://svn.vsp.tu-berlin.de/repos/public-svn/ueber_uns/logo/TUB_Logo.png" width="15%" height="15%"/></a>
 
-This scenario contains a 25pct sample of Leipzig and its surrounding area; road capacities are accordingly reduced. The scenario is calibrated taking into consideration the traffic counts, modal split and mode-specific trip distance distributions.
+This scenario contains a 25pct sample of [name] and its surrounding area; road capacities are accordingly reduced. The scenario is calibrated taking into consideration the traffic counts, modal split and mode-specific trip distance distributions.
 
 ### Licenses
 
@@ -51,13 +51,13 @@ Handling of large files within git is not without problems (git lfs files are no
 ----
 ### Run the MATSim Template scenario
 
-The Leipzig scenario has a command line interface providing the following options:
+The [name] scenario has a command line interface providing the following options:
 
 ![Scenario CLI](scenarios/cli.png "Scenario CLI")
 
 It can be used by using either of these methods:
 
-##### ... using an IDE, e.g. Eclipse, IntelliJ - Alternative 1: use cloned/downloaded matsim-leipzig repository
+##### ... using an IDE, e.g. Eclipse, IntelliJ - Alternative 1: use cloned/downloaded matsim-[name] repository
 (Requires either cloning or downloading the repository.)
 
 1. Set up the project in your IDE.

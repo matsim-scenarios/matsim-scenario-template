@@ -76,6 +76,7 @@ input/$V/$N-$V-network-with-pt.xml.gz: input/$V/$N-$V-network.xml.gz
 	# FIXME: Adjust GTFS
 
 	java -Xmx20G -jar $(JAR) prepare transit-from-gtfs --network $<\
+	 --output=input/$V\
 	 --name $N-$V --date "2021-08-18" --target-crs $(CRS) \
 	 ../shared-svn/projects/$N/data/20210816_regio.zip\
 	 ../shared-svn/projects/$N/data/20210816_train_short.zip\

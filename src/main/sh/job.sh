@@ -22,7 +22,8 @@ arguments="<put custom args here>"
 # Don't change anything below
 ################
 
-command="java -Xmx$memory -Xms$memory -XX:+AlwaysPreTouch $JAVA_OPTS -jar $jar --config $config $RUN_ARGS $arguments run"
+jvm_opts="-Xmx$memory -Xms$memory -XX:+AlwaysPreTouch -XX:+UseParallelGC"
+command="java $jvm_opts $JAVA_OPTS -jar $jar --config $config $RUN_ARGS $arguments run"
 
 # If there is a run dir, set it to the run name
 if [ -n "$RUN_DIR" ]; then

@@ -13,8 +13,8 @@ test/output
 *.iml
 .idea/
 
-# Created by https://www.toptal.com/developers/gitignore/api/osx,java,linux,maven,eclipse,windows,python,r,intellij+all
-# Edit at https://www.toptal.com/developers/gitignore?templates=osx,java,linux,maven,eclipse,windows,python,r,intellij+all
+# Created by https://www.toptal.com/developers/gitignore/api/r,osx,java,linux,maven,python,eclipse,windows,intellij+all,jupyternotebooks
+# Edit at https://www.toptal.com/developers/gitignore?templates=r,osx,java,linux,maven,python,eclipse,windows,intellij+all,jupyternotebooks
 
 ### Eclipse ###
 .metadata
@@ -196,6 +196,20 @@ fabric.properties
 hs_err_pid*
 replay_pid*
 
+### JupyterNotebooks ###
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/
+
 ### Linux ###
 *~
 
@@ -336,11 +350,8 @@ docs/_build/
 .pybuilder/
 
 # Jupyter Notebook
-.ipynb_checkpoints
 
 # IPython
-profile_default/
-ipython_config.py
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
@@ -423,6 +434,8 @@ cython_debug/
 # Poetry local configuration file - https://python-poetry.org/docs/configuration/#local-configuration
 poetry.toml
 
+# ruff
+.ruff_cache/
 
 ### R ###
 # History files
@@ -505,4 +518,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/osx,java,linux,maven,eclipse,windows,python,r,intellij+all
+# End of https://www.toptal.com/developers/gitignore/api/r,osx,java,linux,maven,python,eclipse,windows,intellij+all,jupyternotebooks

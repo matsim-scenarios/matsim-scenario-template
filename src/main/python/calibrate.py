@@ -74,7 +74,7 @@ study, obj = calibration.create_mode_share_study("calib", "matsim-template-1.0.j
                                         modes, target, 
                                         initial_asc=initial,
                                         args="--10pct",
-                                        jvm_args="-Xmx75G -Xmx75G -XX:+AlwaysPreTouch",
+                                        jvm_args="-Xmx75G -Xmx75G -XX:+AlwaysPreTouch -XX:+UseParallelGC",
                                         lr=calibration.linear_lr_scheduler(start=0.5),
                                         person_filter=filter_persons, map_trips=filter_modes, chain_runs=True)
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Iterate options to generate all runs
 for it in "--iterations 100"  "--iterations 1000"; do

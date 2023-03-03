@@ -1,4 +1,4 @@
-#!/bin/bash --login
+#!/usr/bin/env bash
 #$ -l h_rt=790000
 #$ -j y
 #$ -m a

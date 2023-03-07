@@ -82,7 +82,7 @@
 		<parameterset type="strategysettings">
 			<param name="strategyName" value="ReRoute"/>
 			<param name="subpopulation" value="person"/>
-			<param name="weight" value="0.10"/>
+			<param name="weight" value="0.1"/>
 		</parameterset>
 		<parameterset type="strategysettings">
 			<param name="strategyName" value="SubtourModeChoice"/>
@@ -92,7 +92,7 @@
 		<parameterset type="strategysettings">
 			<param name="strategyName" value="TimeAllocationMutator"/>
 			<param name="subpopulation" value="person"/>
-			<param name="weight" value="0.025"/>
+			<param name="weight" value="0.1"/>
 		</parameterset>
 
 		<parameterset type="strategysettings">
@@ -140,7 +140,7 @@
 	</module>
 
 	<module name="planCalcScore">
-		<param name="fractionOfIterationsToStartScoreMSA" value="1.0"/>
+		<param name="fractionOfIterationsToStartScoreMSA" value="0.9"/>
 		<parameterset type="scoringParameters">
 
 			<parameterset type="modeParams">

@@ -64,7 +64,7 @@
 		<param name="numberOfThreads" value="16"/>
 		<param name="startTime" value="00:00:00"/>
 		<param name="stuckTime" value="30.0"/>
-		<param name="trafficDynamics" value="queue"/>
+		<param name="trafficDynamics" value="kinematicWaves"/>
 		<param name="linkDynamics" value="PassingQ"/>
 		<param name="useLanes" value="false"/>
 

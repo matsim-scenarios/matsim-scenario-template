@@ -136,7 +136,7 @@
 	</module>
 
 	<module name="vspExperimental">
-		<param name="vspDefaultsCheckingLevel" value="warn"/>
+		<param name="vspDefaultsCheckingLevel" value="abort"/>
 	</module>
 
 	<module name="planCalcScore">

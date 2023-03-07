@@ -221,6 +221,7 @@
         <module name="OperatorWrap"/>
         -->
         <module name="SingleSpaceSeparator"/>
+		<module name="WhitespaceAfter"/>
         <module name="TypecastParenPad"/>
 
 	    <module name="Regexp">

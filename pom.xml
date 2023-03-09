@@ -126,6 +126,25 @@
 				</executions>
 			</plugin>
 
+			<!-- Fetch Git information	-->
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>5.0.0</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnNoGitDirectory>false</failOnNoGitDirectory>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<!--				The maven-shade-plugin replaces the maven-assembly-plugin to configure "mvn package". The assembly-plugin regularly-->
 				<!--				creates problems when GeoTools are used, which the shade-plugin does not (see-->
@@ -140,7 +159,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<outputFile>${project.basedir}/${project.build.finalName}.jar</outputFile>
+							<outputFile>${project.basedir}/${project.build.finalName}-${git.commit.id.describe-short}.jar</outputFile>
 							<transformers>
 								<!-- The following sets the main class for the executable jar as you otherwise would with the assembly plugin -->
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -149,6 +168,7 @@
 										<Specification-Vendor>org.matsim</Specification-Vendor>
 										<Implementation-Vendor>org.matsim</Implementation-Vendor>
 										<Implementation-Version>${project.version}</Implementation-Version>
+										<SCM-Revision>${git.commit.id.describe-short}</SCM-Revision>
 										<Multi-Release>true</Multi-Release>
 									</manifestEntries>
 								</transformer>

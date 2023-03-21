@@ -3,6 +3,7 @@ N := template
 V := v1.0
 CRS := EPSG:25832
 
+MEMORY ?= 20G
 JAR := matsim-$(N)-*.jar
 
 ifndef SUMO_HOME
@@ -10,6 +11,9 @@ ifndef SUMO_HOME
 endif
 
 osmosis := osmosis/bin/osmosis
+
+# Scenario creation tool
+sc := java -Xmx$(MEMORY) -jar $(JAR)
 
 .PHONY: prepare
 
@@ -64,12 +68,12 @@ input/sumo.net.xml: input/network.osm
 
 
 input/$V/$N-$V-network.xml.gz: input/sumo.net.xml
-	java -jar $(JAR) prepare network-from-sumo $<\
+	$(sc) prepare network-from-sumo $<\
 	 --output $@
 
 	# FIXME: Adjust
 
-	java -jar $(JAR) prepare network\
+	$(sc) prepare network\
      --shp ../public-svn/matsim/scenarios/countries/de/$N/shp/prepare-network/av-and-drt-area.shp\
 	 --network $@\
 	 --output $@
@@ -78,7 +82,7 @@ input/$V/$N-$V-network.xml.gz: input/sumo.net.xml
 input/$V/$N-$V-network-with-pt.xml.gz: input/$V/$N-$V-network.xml.gz
 	# FIXME: Adjust GTFS
 
-	java -Xmx20G -jar $(JAR) prepare transit-from-gtfs --network $<\
+	$(sc) prepare transit-from-gtfs --network $<\
 	 --output=input/$V\
 	 --name $N-$V --date "2021-08-18" --target-crs $(CRS) \
 	 ../shared-svn/projects/$N/data/20210816_regio.zip\
@@ -92,7 +96,7 @@ input/$V/$N-$V-network-with-pt.xml.gz: input/$V/$N-$V-network.xml.gz
 input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 	# FIXME: Adjust path
 
-	java -jar $(JAR) prepare extract-freight-trips ../shared-svn/projects/german-wide-freight/v1.2/german-wide-freight-25pct.xml.gz\
+	$(sc) extract-freight-trips ../shared-svn/projects/german-wide-freight/v1.2/german-wide-freight-25pct.xml.gz\
 	 --network ../shared-svn/projects/german-wide-freight/original-data/german-primary-road.network.xml.gz\
 	 --input-crs EPSG:5677\
 	 --target-crs $(CRS)\
@@ -100,12 +104,12 @@ input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 	 --output $@
 
 input/$V/prepare-25pct.plans.xml.gz:
-	java -jar $(JAR) prepare trajectory-to-plans\
+	$(sc) prepare trajectory-to-plans\
 	 --name prepare --sample-size 0.25 --output input/$V\
 	 --population ../shared-svn/projects/$N/matsim-input-files/population.xml.gz\
 	 --attributes  ../shared-svn/projects/$N/matsim-input-files/personAttributes.xml.gz
 
-	java -jar $(JAR) prepare resolve-grid-coords\
+	$(sc) prepare resolve-grid-coords\
 	 input/$V/prepare-25pct.plans.xml.gz\
 	 --input-crs $(CRS)\
 	 --grid-resolution 300\
@@ -113,34 +117,34 @@ input/$V/prepare-25pct.plans.xml.gz:
 	 --output $@
 
 input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz input/$V/prepare-25pct.plans.xml.gz
-	java -jar $(JAR) prepare generate-short-distance-trips\
+	$(sc) prepare generate-short-distance-trips\
  	 --population input/$V/prepare-25pct.plans.xml.gz\
  	 --input-crs $(CRS)\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
  	 --num-trips 111111 # FIXME
 
-	java -jar $(JAR) prepare adjust-activity-to-link-distances input/$V/prepare-25pct.plans-with-trips.xml.gz\
+	$(sc) prepare adjust-activity-to-link-distances input/$V/prepare-25pct.plans-with-trips.xml.gz\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
      --scale 1.15\
      --input-crs $(CRS)\
      --network input/$V/$N-$V-network.xml.gz\
      --output input/$V/prepare-25pct.plans-adj.xml.gz
 
-	java -jar $(JAR) prepare xy-to-links --network input/$V/$N-$V-network.xml.gz --input input/$V/prepare-25pct.plans-adj.xml.gz --output $@
+	$(sc) prepare xy-to-links --network input/$V/$N-$V-network.xml.gz --input input/$V/prepare-25pct.plans-adj.xml.gz --output $@
 
-	java -jar $(JAR) prepare fix-subtour-modes --input $@ --output $@
+	$(sc) prepare fix-subtour-modes --input $@ --output $@
 
-	java -jar $(JAR) prepare merge-populations $@ $< --output $@
+	$(sc) prepare merge-populations $@ $< --output $@
 
-	java -jar $(JAR) prepare extract-home-coordinates $@ --csv input/$V/$N-$V-homes.csv
+	$(sc) prepare extract-home-coordinates $@ --csv input/$V/$N-$V-homes.csv
 
-	java -jar $(JAR) prepare downsample-population $@\
+	$(sc) prepare downsample-population $@\
     	 --sample-size 0.25\
     	 --samples 0.1 0.01\
 
 
 check: input/$V/$N-$V-25pct.plans.xml.gz
-	java -jar $(JAR) analysis check-population $<\
+	$(sc) analysis check-population $<\
  	 --input-crs $(CRS)\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)
 

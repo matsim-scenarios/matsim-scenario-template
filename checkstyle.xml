@@ -199,6 +199,7 @@
 			<property name="applyToPackage" value="false"/>
 			<property name="applyToPrivate" value="false"/>
 		</module>
+		<module name="IllegalIdentifierName"/>
 		<module name="InterfaceTypeParameterName"/>
 		<module name="LambdaParameterName"/>
 		<module name="LocalFinalVariableName"/>
@@ -215,6 +216,8 @@
 			<!-- Underscores are allowed -->
 			<property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
 		</module>
+		<module name="RecordComponentName" />
+		<module name="RecordTypeParameterName"/>
 		<module name="StaticVariableName"/>
 		<module name="TypeName"/>
 

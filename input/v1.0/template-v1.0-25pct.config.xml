@@ -72,6 +72,11 @@
 		<param name="insertingWaitingVehiclesBeforeDrivingVehicles" value="true"/>
 	</module>
 
+	<module name="ReplanningAnnealer">
+		<param name="activateAnnealingModule" value="true"/>
+		<!--        <param name="shapeFactor" value="0.05"/>-->
+	</module>
+
 	<module name="strategy">
 		<param name="fractionOfIterationsToDisableInnovation" value="0.9"/>
 		<parameterset type="strategysettings">

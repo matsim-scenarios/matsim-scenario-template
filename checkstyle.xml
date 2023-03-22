@@ -232,6 +232,9 @@
 		<module name="SingleSpaceSeparator"/>
 		<module name="WhitespaceAfter"/>
 		<module name="TypecastParenPad"/>
+		<module name="EmptyLineSeparator">
+			<property name="tokens" value="PACKAGE_DEF,CLASS_DEF,INTERFACE_DEF,ENUM_DEF,METHOD_DEF"/>
+		</module>
 
 		<module name="Regexp">
 			<property name="format" value="[ \t]+$"/>

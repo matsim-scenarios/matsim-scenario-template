@@ -19,7 +19,7 @@ jobs:
           distribution: adopt
           cache: maven
 
-      - name: Package
+      - name: Checkstyle
         run: mvn --batch-mode --update-snapshots checkstyle:checkstyle
 
   enforce:

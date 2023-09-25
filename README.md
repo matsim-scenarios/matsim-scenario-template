@@ -5,7 +5,7 @@
 ![JDK](https://img.shields.io/badge/JDK-17+-green.svg)
 
 
-![MATSim network and agents](https://placehold.co/400x300?text=Image+Placeholder "MATSim network and agents")
+![MATSim network and agents](https://placehold.co/500x400?text=Image+Placeholder "MATSim network and agents")
 
 
 ----
@@ -53,7 +53,7 @@ Handling of large files within git is not without problems (git lfs files are no
 
 The [name] scenario has a command line interface providing the following options:
 
-![Scenario CLI](https://placehold.co/300x300?text=CLI+Placeholder "Scenario CLI")
+![Scenario CLI](https://placehold.co/500x300?text=CLI+Placeholder "Scenario CLI")
 
 It can be used by using either of these methods:
 

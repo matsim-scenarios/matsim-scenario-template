@@ -5,7 +5,7 @@
 ![JDK](https://img.shields.io/badge/JDK-17+-green.svg)
 
 
-![MATSim network and agents](scenarios/visualization.png "MATSim network and agents")
+![MATSim network and agents](https://placehold.co/800x600?text=Image+Placeholder "MATSim network and agents")
 
 
 ----

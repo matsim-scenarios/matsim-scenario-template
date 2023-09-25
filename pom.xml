@@ -10,7 +10,7 @@
 
 		<!-- PR-labelled release -->
 		<!-- FIXME: Decide on version -->
-		<version>16.0-PR2763</version>
+		<version>16.0-PR2778</version>
 
 		<!-- snapshot == not recommended: rather use PR-labelled release!-->
 <!--		<version>15.0-SNAPSHOT</version>-->

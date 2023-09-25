@@ -1,12 +1,10 @@
 package org.matsim.run;
 
-import ch.sbb.matsim.routing.pt.raptor.SwissRailRaptorModule;
 import org.matsim.analysis.ModeChoiceCoverageControlerListener;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.application.MATSimApplication;
 import org.matsim.application.analysis.CheckPopulation;
 import org.matsim.application.analysis.traffic.LinkStats;
-import org.matsim.application.analysis.travelTimeValidation.TravelTimeAnalysis;
 import org.matsim.application.options.SampleOptions;
 import org.matsim.application.prepare.CreateLandUseShp;
 import org.matsim.application.prepare.freight.tripExtraction.ExtractRelevantFreightTrips;
@@ -19,6 +17,7 @@ import org.matsim.core.config.groups.PlansCalcRouteConfigGroup;
 import org.matsim.core.config.groups.VspExperimentalConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
+import org.matsim.simwrapper.SimWrapperModule;
 import picocli.CommandLine;
 
 import javax.annotation.Nullable;
@@ -31,7 +30,7 @@ import java.util.List;
 		CreateLandUseShp.class, ResolveGridCoordinates.class, FixSubtourModes.class, AdjustActivityToLinkDistances.class, XYToLinks.class
 })
 @MATSimApplication.Analysis({
-		TravelTimeAnalysis.class, LinkStats.class, CheckPopulation.class
+		LinkStats.class, CheckPopulation.class
 })
 // FIXME: Rename scenario
 public class RunTemplateScenario extends MATSimApplication {
@@ -115,11 +114,12 @@ public class RunTemplateScenario extends MATSimApplication {
 		controler.addOverridingModule(new AbstractModule() {
 			@Override
 			public void install() {
-				install(new SwissRailRaptorModule());
-
 				addControlerListenerBinding().to(ModeChoiceCoverageControlerListener.class);
 
 			}
 		});
+
+		controler.addOverridingModule(new SimWrapperModule());
+
 	}
 }

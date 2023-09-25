@@ -5,7 +5,7 @@
 ![JDK](https://img.shields.io/badge/JDK-17+-green.svg)
 
 
-![MATSim network and agents](https://placehold.co/800x600?text=Image+Placeholder "MATSim network and agents")
+![MATSim network and agents](https://placehold.co/400x300?text=Image+Placeholder "MATSim network and agents")
 
 
 ----
@@ -31,7 +31,7 @@ When using this template make sure to adapt it as needed:
 
 This repository provides an open MATSim transport model for [name], provided by the [Transport Systems Planning and Transport Telematics group](https://www.vsp.tu-berlin.de) of [Technische Universität Berlin](http://www.tu-berlin.de).
 
-<a rel="TU Berlin" href="https://www.vsp.tu-berlin.de"><img src="https://svn.vsp.tu-berlin.de/repos/public-svn/ueber_uns/logo/TUB_Logo.png" width="15%" height="15%"/></a>
+<a rel="TU Berlin" href="https://www.vsp.tu-berlin.de"><img src="https://svn.vsp.tu-berlin.de/repos/public-svn/ueber_uns/logo/TU_BERLIN_Logo_Lang_RGB_SR_rot.svg" width="35%" height="35%"/></a>
 
 This scenario contains a 25pct sample of [name] and its surrounding area; road capacities are accordingly reduced. The scenario is calibrated taking into consideration the traffic counts, modal split and mode-specific trip distance distributions.
 
@@ -53,7 +53,7 @@ Handling of large files within git is not without problems (git lfs files are no
 
 The [name] scenario has a command line interface providing the following options:
 
-![Scenario CLI](scenarios/cli.png "Scenario CLI")
+![Scenario CLI](https://placehold.co/300x300?text=CLI+Placeholder "Scenario CLI")
 
 It can be used by using either of these methods:
 

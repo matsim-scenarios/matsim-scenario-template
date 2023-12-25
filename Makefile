@@ -116,7 +116,7 @@ input/$V/prepare-25pct.plans.xml.gz:
 	 --landuse ../matsim-leipzig/scenarios/input/landuse/landuse.shp\
 	 --output $@
 
-input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz input/$V/prepare-25pct.plans.xml.gz
+input/$V/$N-$V-25pct.plans-initial.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-network.xml.gz input/$V/prepare-25pct.plans.xml.gz
 	$(sc) prepare generate-short-distance-trips\
  	 --population input/$V/prepare-25pct.plans.xml.gz\
  	 --input-crs $(CRS)\
@@ -143,11 +143,11 @@ input/$V/$N-$V-25pct.plans.xml.gz: input/freight-trips.xml.gz input/$V/$N-$V-net
     	 --samples 0.1 0.01\
 
 
-check: input/$V/$N-$V-25pct.plans.xml.gz
+check: input/$V/$N-$V-25pct.plans-initial.xml.gz
 	$(sc) analysis check-population $<\
  	 --input-crs $(CRS)\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)
 
 # Aggregated target
-prepare: input/$V/$N-$V-25pct.plans.xml.gz input/$V/$N-$V-network-with-pt.xml.gz
+prepare: input/$V/$N-$V-25pct.plans-initial.xml.gz input/$V/$N-$V-network-with-pt.xml.gz
 	echo "Done"

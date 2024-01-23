@@ -1,12 +1,11 @@
 #!/bin/bash --login
-#$ -l h_rt=790000
-#$ -j y
-#$ -m a
-#$ -o ./logfile/logfile_$JOB_NAME.log
-#$ -cwd
-#$ -pe mp 8
-#$ -l mem_free=6G
-#$ -N run-scenario
+#SBATCH --time=216:00:00
+#SBATCH --output=./logfile/logfile_$SLURM_JOB_NAME.log
+#SBATCH --nodes=1                       # How many computing nodes do you need (for MATSim usually 1)
+#SBATCH --ntasks=1                      # How many tasks should be run (For MATSim usually 1)
+#SBATCH --cpus-per-task=12              # Number of CPUs per task (For MATSim usually 8 - 12)
+#SBATCH --mem=48G                       # RAM for the job
+#SBATCH --job-name=run-scenario         # name of your run, will be displayed in the joblist
 
 date
 hostname

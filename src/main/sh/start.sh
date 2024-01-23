@@ -10,4 +10,4 @@ export RUN_NAME="$name"
 echo "Starting run $name"
 echo "$*"
 
-qsub -V -N matsim-"$name" job.sh
+sbatch --export=ALL --job-name matsim-"$name" job.sh

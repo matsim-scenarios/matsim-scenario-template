@@ -1,11 +1,11 @@
 #!/bin/bash --login
-#$ -l h_rt=790000
-#$ -j y
-#$ -m a
-#$ -cwd
-#$ -pe mp 8
-#$ -l mem_free=6G
-#$ -N calib-scenario
+#SBATCH --time=216:00:00
+#SBATCH --output=./logfile/logfile_$SLURM_JOB_NAME.log
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=48G
+#SBATCH --job-name=calib-scenario
 
 date
 hostname

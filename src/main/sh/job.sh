@@ -1,6 +1,7 @@
 #!/bin/bash --login
-#SBATCH --time=216:00:00
-#SBATCH --output=./logfile/logfile_$SLURM_JOB_NAME.log
+#SBATCH --time=200:00:00
+#SBATCH --partition=smp
+#SBATCH --output=./logfile/logfile_%x-%j.log
 #SBATCH --nodes=1                       # How many computing nodes do you need (for MATSim usually 1)
 #SBATCH --ntasks=1                      # How many tasks should be run (For MATSim usually 1)
 #SBATCH --cpus-per-task=12              # Number of CPUs per task (For MATSim usually 8 - 12)

@@ -6,3 +6,6 @@ source env/bin/activate
 pip install --upgrade pip
 
 pip install "matsim-tools[calibration]==0.0.16"
+
+# Alternative: Install from a specific branch on github
+#pip install --force-reinstall "matsim-tools[calibration] @ git+https://github.com/matsim-vsp/matsim-python-tools.git@dist-calibration"

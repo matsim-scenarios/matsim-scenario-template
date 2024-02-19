@@ -7,6 +7,8 @@
 #SBATCH --cpus-per-task=12              # Number of CPUs per task (For MATSim usually 8 - 12)
 #SBATCH --mem=48G                       # RAM for the job
 #SBATCH --job-name=run-scenario         # name of your run, will be displayed in the joblist
+#SBATCH --mail-type=END,FAIL				      # Send email on end, and fail
+#SBATCH --mail-user ...	# Your email address
 
 date
 hostname
@@ -30,6 +32,9 @@ if [ -n "$RUN_DIR" ]; then
       command="$command --output $RUN_DIR/$RUN_NAME --runId $RUN_NAME"
 fi
 
+if [ -n "$RUN_NAME" ]; then
+      command="$command --output output/$RUN_NAME --runId $RUN_NAME"
+fi
 
 # Optional parameters
 if [ "$RUN_MONITOR" == "true" ]; then

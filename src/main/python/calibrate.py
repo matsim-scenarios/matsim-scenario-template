@@ -50,7 +50,7 @@ def filter_persons(persons):
     persons = pd.merge(persons, homes, how="inner", left_on="person", right_on="person")
     persons = gpd.GeoDataFrame(persons, geometry=gpd.points_from_xy(persons.home_x, persons.home_y))
 
-    df = gpd.sjoin(persons.set_crs("EPSG:25832"), city, how="inner", op="intersects")
+    df = gpd.sjoin(persons.set_crs("EPSG:25832"), city, how="inner", predicate="intersects")
 
     print("Filtered %s persons" % len(df))
 

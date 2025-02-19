@@ -98,7 +98,7 @@ input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
 
 	$(sc) extract-freight-trips ../shared-svn/projects/german-wide-freight/v1.2/german-wide-freight-25pct.xml.gz\
 	 --network ../shared-svn/projects/german-wide-freight/original-data/german-primary-road.network.xml.gz\
-	 --input-crs EPSG:5677\
+	 --input-crs EPSG:25832\
 	 --target-crs $(CRS)\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
 	 --output $@

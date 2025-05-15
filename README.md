@@ -20,6 +20,9 @@ When using this template make sure to adapt it as needed:
 - [ ] Makefile
 - [ ] Update CITATION.cff (Authors and version)
 - [ ] Modify calibration.py in `src/main/python`
+- [ ] If you would like to chain jobs in SLURM, you can find the corresponding bash script for this functionality in `src/main/sh`
+  - [ ] In this script, you can specify the number of chained jobs (max_nojob), which can be found at the top.
+  - [ ] Then you'll have to define your job script. The current setup calls runCalib.sh, which in turn calls the calibrate.py script.
 - [ ] Update README.md (This file)
   - [ ] Change Name and URLs
   - [ ] Check whether you are using Senozon data and change it according to your license agreement.

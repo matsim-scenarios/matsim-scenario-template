@@ -4,6 +4,12 @@
 ![license](https://img.shields.io/github/license/matsim-scenarios/matsim-scenario-template.svg)
 ![JDK](https://img.shields.io/badge/JDK-17+-green.svg)
 
+This template was developed in 2023.  We find it quite difficult 
+to update because there are no regression tests.  At VSP, we instead
+prefer to start from an existing more modern scenario.  As of now
+(may'25), this is the matsim-lausitz scenario.  So if you are at
+VSP, please do not start from this scenario-template, but talk with
+your collegues and/or to Kai Nagel.  kai, gregorL, may'25
 
 ![MATSim network and agents](https://placehold.co/500x400?text=Image+Placeholder "MATSim network and agents")
 

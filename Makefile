@@ -109,7 +109,7 @@ input/plans-longHaulFreight.xml.gz: input/$V/$N-$V-network.xml.gz
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
 	 --cut-on-boundary\
 	 # this will cut the trips at the borders of Germany; maybe remove this in the long run but would need some kind of motorway network outside
-	 # Germany.  (Kai would very much prefer the latter.)
+	 # Germany.  (Kai would very much prefer the latter.)g
 	 --LegMode "longDistanceFreight"\
 	 --output $@
 

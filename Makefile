@@ -1,3 +1,9 @@
+# the following template was developed in 2023.  It is quite difficult
+# to update because there are no regression tests.  At VSP, we instead
+# prefer to start from an existing more modern scenario.  As of now
+# (may'25), this is the matsim-lausitz scenario.  So if you are at
+# VSP, please do not start from the scenario-template, but talk with
+# your collegues and/or to Kai Nagel.  kai, gregorL, may'25
 
 N := template
 V := v1.0

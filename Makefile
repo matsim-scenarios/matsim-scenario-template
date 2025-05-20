@@ -1,3 +1,6 @@
+# The following was modified manually quite heavily.  Unfortunately, it cannot be tested.  So it may no longer be consistent.  Sorry.  But without
+# regression tests we do not know how to do better.  kai, gregorL, may'25
+
 
 N := template
 V := v1.0
@@ -20,29 +23,35 @@ sc := java -Xmx$(MEMORY) -jar $(JAR)
 $(JAR):
 	mvn package
 
-# Required files
+# download the germany file (maybe use newer version):
 input/network.osm.pbf:
 	curl https://download.geofabrik.de/europe/germany-210701.osm.pbf\
 	  -o input/network.osm.pbf
 
+# extract items from the germany file at three levels of detail and merge them ($< will use the input file, which is input/network.osm.pbf)
 input/network.osm: input/network.osm.pbf
 
 	# FIXME: Adjust level of details and area
 
+# extract detailed network (see param highway) from OSM.  The "poly" file is essentially a shp-file.  What people seem to have done is taken the
+# polygon from the shp file, and manually changed it to the poly format.  Ask Simon Meinhardt.
 	$(osmosis) --rb file=$<\
 	 --tf accept-ways bicycle=yes highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary_link,secondary,tertiary,motorway_junction,residential,unclassified,living_street\
 	 --bounding-polygon file="../shared-svn/projects/$N/data/area.poly"\
 	 --used-node --wb input/network-detailed.osm.pbf
 
-	$(osmosis) --rb file=$<\
+# extract the "intermediate" network:
+		$(osmosis) --rb file=$<\
 	 --tf accept-ways highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary_link,secondary,tertiary,motorway_junction\
 	 --bounding-box top=51.92 left=11.45 bottom=50.83 right=13.36\
 	 --used-node --wb input/network-coarse.osm.pbf
 
+	#	retrieve germany wide network (see param highway) from OSM
 	$(osmosis) --rb file=$<\
 	 --tf accept-ways highway=motorway,motorway_link,motorway_junction,trunk,trunk_link,primary,primary_link\
 	 --used-node --wb input/network-germany.osm.pbf
 
+#	put the 3 above networks together and remove railway
 	$(osmosis) --rb file=input/network-germany.osm.pbf --rb file=input/network-coarse.osm.pbf --rb file=input/network-detailed.osm.pbf\
   	 --merge --merge\
   	 --tag-transform file=input/remove-railway.xml\
@@ -55,7 +64,9 @@ input/network.osm: input/network.osm.pbf
 
 input/sumo.net.xml: input/network.osm
 
+#	create sumo network from osm network
 	$(SUMO_HOME)/bin/netconvert --geometry.remove --ramps.guess --ramps.no-split\
+#	roadTypes are taken either from the general file "osmNetconvert.typ.xml" or from the german one "osmNetconvertUrbanDe.typ.xml"
 	 --type-files $(SUMO_HOME)/data/typemap/osmNetconvert.typ.xml,$(SUMO_HOME)/data/typemap/osmNetconvertUrbanDe.typ.xml\
 	 --tls.guess-signals true --tls.discard-simple --tls.join --tls.default-type actuated\
 	 --junctions.join --junctions.corner-detail 5\
@@ -67,21 +78,18 @@ input/sumo.net.xml: input/network.osm
 	 --osm-files $< -o=$@
 
 
+# transform sumo network to matsim network and clean it afterwards
+# free-speed-factor is applied to all links with speed <= 50km/h.  Standard is 0.9; there is some tendency to set it to smaller values since that pushes more traffic on the motorways.
+# Lausitz has 0.75.  Cleans the network for the given modes (car, bike).  Does not hurt to clean for modes that are, in the end, not routed on the network.  (?)
 input/$V/$N-$V-network.xml.gz: input/sumo.net.xml
-	$(sc) prepare network-from-sumo $<\
-	 --output $@
+	$(sc) prepare network-from-sumo $< --output $@
+	$(sc) prepare clean-network $@ --output $@ --modes car --modes bike
+#	$(sc) prepare network --network $< --output $@
+# add last line and corresponding class for example to add hbefa link classed and freight modes; look at matsim-lausitz (which will do the hbefa stuff
+# and add freight modes).
 
-	# FIXME: Adjust
-
-	$(sc) prepare network\
-     --shp ../public-svn/matsim/scenarios/countries/de/$N/shp/prepare-network/av-and-drt-area.shp\
-	 --network $@\
-	 --output $@
-
-
+#add pt to network from german wide gtfs, but only for area of shp file
 input/$V/$N-$V-network-with-pt.xml.gz: input/$V/$N-$V-network.xml.gz
-	# FIXME: Adjust GTFS
-
 	$(sc) prepare transit-from-gtfs --network $<\
 	 --output=input/$V\
 	 --name $N-$V --date "2021-08-18" --target-crs $(CRS) \
@@ -93,14 +101,16 @@ input/$V/$N-$V-network-with-pt.xml.gz: input/$V/$N-$V-network.xml.gz
 	 --shp ../shared-svn/projects/$N/data/Bayern.zip\
 	 --shp ../shared-svn/projects/$N/data/germany-area/germany-area.shp\
 
-input/freight-trips.xml.gz: input/$V/$N-$V-network.xml.gz
-	# FIXME: Adjust path
-
-	$(sc) extract-freight-trips ../shared-svn/projects/german-wide-freight/v1.2/german-wide-freight-25pct.xml.gz\
-	 --network ../shared-svn/projects/german-wide-freight/original-data/german-primary-road.network.xml.gz\
+input/plans-longHaulFreight.xml.gz: input/$V/$N-$V-network.xml.gz
+	$(sc) prepare extract-freight-trips ../public-svn/matsim/scenarios/countries/de/german-wide-freight/v2/german_freight.100pct.plans.xml.gz\
+	 --network ../public-svn/matsim/scenarios/countries/de/german-wide-freight/v2/germany-europe-network.xml.gz\
 	 --input-crs EPSG:25832\
 	 --target-crs $(CRS)\
 	 --shp ../shared-svn/projects/$N/data/shp/$N.shp --shp-crs $(CRS)\
+	 --cut-on-boundary\
+	 # this will cut the trips at the borders of Germany; maybe remove this in the long run but would need some kind of motorway network outside
+	 # Germany.  (Kai would very much prefer the latter.)
+	 --LegMode "longDistanceFreight"\
 	 --output $@
 
 input/$V/prepare-25pct.plans.xml.gz:

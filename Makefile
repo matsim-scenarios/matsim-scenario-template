@@ -54,10 +54,6 @@ input/network.osm: input/network.osm.pbf
   	 --tag-transform file=input/remove-railway.xml\
   	 --wx $@
 
-	rm input/network-detailed.osm.pbf
-	rm input/network-coarse.osm.pbf
-	rm input/network-germany.osm.pbf
-
 
 input/sumo.net.xml: input/network.osm
 

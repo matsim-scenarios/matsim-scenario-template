@@ -9,7 +9,10 @@ to update because there are no regression tests.  At VSP, we instead
 prefer to start from an existing more modern scenario.  As of now
 (may'25), this is the matsim-lausitz scenario.  So if you are at
 VSP, please do not start from this scenario-template, but talk with
-your collegues and/or to Kai Nagel.  kai, gregorL, may'25
+your colleagues and/or to Kai Nagel.  kai, gregorL, may'25
+
+Still, this template is a nice starting point because the alternative would be to start from 0. The current workflow is: Create your github repo based on this template and look at matsim-lausitz or matsim-dresden for everything else.
+template =! running example. -sm1025
 
 ![MATSim network and agents](https://placehold.co/500x400?text=Image+Placeholder "MATSim network and agents")
 
@@ -47,7 +50,7 @@ This scenario contains a 25pct sample of [name] and its surrounding area; road c
 
 ### Licenses
 
-The **MATSim program code** in this repository is distributed under the terms of the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.html.en). The MATSim program code are files that reside in the `src` directory hierarchy and typically end with `*.java`.
+The **MATSim program code** in this repository is distributed under the terms of the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.html.en). The MATSim program code are files that reside in the directory `src/main/java/org/matsim`.
 
 The **MATSim input population** is licensed under the <a rel="license" href="https://creativecommons.org/licenses/by-nc/3.0/de/deed.de"> Creative Commons Attribution CC-BY-NC 3.0 DE License </a> and was provided in its initial version by Senozon Deutschland GmbH.
 

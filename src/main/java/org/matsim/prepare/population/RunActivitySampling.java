@@ -1,5 +1,7 @@
 package org.matsim.prepare.population;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +19,7 @@ import picocli.CommandLine;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -31,7 +34,7 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	/**
 	 * Maps person index to list of activities.
 	 */
-	private final Map<String, List<Activity>> activities = new HashMap<String, List<Activity>>();
+	private final Map<String, List<CSVRecord>> activities = new HashMap<>();
 
 	@CommandLine.Option(names = "--input", description = "Path to input population", required = true)
 	private Path input;
@@ -56,7 +59,7 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	/**
 	 * Constructor that allows to use the run method directly and not as command.
 	 */
-	RunActivitySampling(PersonMatcher matcher, Map<String, List<Activity>> activities, PopulationFactory factory, long seed) {
+	RunActivitySampling(PersonMatcher matcher, Map<String, List<CSVRecord>> activities, PopulationFactory factory, long seed) {
 		this.matcher = matcher;
 		this.activities.putAll(activities);
 		this.factory = factory;
@@ -70,7 +73,7 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	/**
 	 * Create daily plan from a list of entries.
 	 */
-	public static Plan createPlan(Coord homeCoord, List<Activity> activities, SplittableRandom rnd, PopulationFactory factory) {
+	public static Plan createPlan(Coord homeCoord, List<CSVRecord> activities, SplittableRandom rnd, PopulationFactory factory) {
 		Plan plan = factory.createPlan();
 
 		Activity a = null;
@@ -84,15 +87,15 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 
 		for (int i = 0; i < activities.size(); i++) {
 
-			Activity act = activities.get(i);
+			CSVRecord act = activities.get(i);
 
-			String actType = act.getType();
+			String actType = act.get("type");
 
 			// First and last activities that are other are changed to home
 			if (actType.equals("other") && (i == 0 || i == activities.size() - 1))
 				actType = "home";
 
-			int duration = (int) (act.getEndTime().seconds() - act.getStartTime().seconds());
+			int duration = (int) Double.parseDouble(act.get("duration"));
 
 			if (actType.equals("home")) {
 				a = factory.createActivityFromCoord("home", homeCoord);
@@ -181,19 +184,40 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	/**
 	 * Read and group activities by person id.
 	 */
-	public static Map<String, List<Activity>> readActivities(Path csv) throws IOException {
+	public static Map<String, List<CSVRecord>> readActivities(Path csv) throws IOException {
+
+		String currentId = null;
+		List<CSVRecord> current = null;
+		Map<String, List<CSVRecord>> activities = new LinkedHashMap<>();
+		int i = 0;
 
 
-		Population population = PopulationUtils.readPopulation(csv.toString());
+		try (CSVParser parser = CSVParser.parse(csv, StandardCharsets.UTF_8,
+			CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build())) {
+			for (CSVRecord r : parser) {
 
-		Map<String, List<Activity>> personToActivityMap = new HashMap<>();
-		for (Person person : population.getPersons().values()) {
-			List<Activity> acts = TripStructureUtils.getActivities(person.getSelectedPlan(), TripStructureUtils.StageActivityHandling.ExcludeStageActivities);
-			personToActivityMap.put(person.getId().toString(), acts);
+				String pId = r.get("p_id");
+
+				if (!Objects.equals(pId, currentId)) {
+					if (current != null)
+						activities.put(currentId, current);
+
+					currentId = pId;
+					current = new ArrayList<>();
+				}
+
+				current.add(r);
+				i++;
+			}
 		}
 
-		return personToActivityMap;
+		if (current != null && !current.isEmpty()) {
+			activities.put(currentId, current);
+		}
 
+		log.info("Read {} activities for {} persons", i, activities.size());
+
+		return activities;
 	}
 
 	/**
@@ -258,7 +282,7 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 		switch (mobile.toLowerCase()) {
 
 			case "true" -> {
-				List<Activity> activities = this.activities.get(idx);
+				List<CSVRecord> activities = this.activities.get(idx);
 
 				if (activities == null)
 					throw new AssertionError("No activities for mobile person " + idx);

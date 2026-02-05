@@ -1,0 +1,3 @@
+v1.0: uses OSM for location choice (OSM is relatively inaccurate in Gunma)
+v1.1: uses telephone book for locations choice (for work, edu, and other). Still uses OSM for home choice.
+v1.2: adds census data regarding commuter flow

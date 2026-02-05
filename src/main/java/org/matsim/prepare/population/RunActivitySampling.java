@@ -36,13 +36,13 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	 */
 	private final Map<String, List<CSVRecord>> activities = new HashMap<>();
 
-	@CommandLine.Option(names = "--input", description = "Path to input population", required = true)
+	@CommandLine.Option(names = "--input", description = "Path to input population", required = true) //, defaultValue =  "input/v1.0/gunma-only-v1.0-1pct.plans.xml.gz")
 	private Path input;
-	@CommandLine.Option(names = "--output", description = "Output path for population", required = true)
+	@CommandLine.Option(names = "--output", description = "Output path for population", required = true) //, defaultValue = "input/v1.0/gunma-only-v1.0-1pct.plans-with-activities.xml.gz")
 	private Path output;
-	@CommandLine.Option(names = "--persons", description = "Path to person table", required = true)
+	@CommandLine.Option(names = "--persons", description = "Path to person table", required = true) //, defaultValue = "../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/travel_survey/person_attributes.csv")
 	private Path personsPath;
-	@CommandLine.Option(names = "--activities", description = "Path to activity table", required = true)
+	@CommandLine.Option(names = "--activities", description = "Path to activity table", required = true) //, defaultValue = "../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/travel_survey/activities.csv")
 	private Path activityPath;
 	@CommandLine.Option(names = "--seed", description = "Seed used to sample plans", defaultValue = "1")
 	private long seed;
@@ -269,12 +269,17 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	@Override
 	public void run(Person person) {
 
+		// Since our travel survey doesn't include any children under the age of 7, we will assume they are immobile for now
+		if (PersonUtils.getAge(person) < 7) {
+			return;
+		}
+
 		SplittableRandom rnd = initRandomNumberGenerator(person);
 
 		String idx = matcher.matchPerson(person, rnd);
 		CSVRecord row = matcher.getPerson(idx);
 
-		copyAttributes(row, person);
+//		copyAttributes(row, person);
 
 		String mobile = row.get("mobile_on_day");
 
@@ -295,6 +300,7 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 
 				person.addPlan(plan);
 				person.setSelectedPlan(plan);
+				person.getAttributes().putAttribute("travelSurveyMatchId", idx);
 			}
 
 			case "false" -> {

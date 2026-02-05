@@ -1,0 +1,62 @@
+# We reuse the config from Luo (20XX)
+#$p/gunma-$V-config.xml: /Users/jakob/git/_playground/gunma/data/matsim_inputs/config_simulation.xml
+	#cp $< $@
+
+
+# 1) Download osm.pbf for entire Kanto region from geofabrik
+# This doesn't really work for me, download silently crashes. I had to download it manually...
+#$(gunma)/input/osm/kanto.osm.pbf:
+#	curl https://download.geofabrik.de/asia/japan/kanto-latest.osm.pbf -o $@
+
+# 1.5) INTERMEDIATE STEP: produce $(gunma)/input/shp/gunma_2450_poly/gunma_2450.poly  in QGIS.
+# Load ../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/shp/gunma_2450/gunma_2450.shp into QGIS
+# Install osmpoly_export plugin in qgis
+# select  layer, and press osm2poly plugin button (right side of toolbar)
+# save to ../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/shp/gunma_2450_poly/gunma_2450.poly
+
+# 2) Filter for only gunma (in EPSG:4326)
+# result looks good in QGIS
+#$(gunma)/input/osm/gunma.osm.pbf: $(gunma)/input/osm/kanto-260119.osm.pbf
+#	$(osmosis) --rb file=$< \
+# 	 --bounding-polygon file=$(gunma)/input/shp/gunma_4326_poly/gunma_4326.poly \
+#	 --used-node \
+#	 --write-pbf $@
+
+
+# 3) Converts osm.pbf into facilities.gpkg.
+# Meanwhile, it is supposed to convert the facilities from WGS84 (4326) to project specific CRS (2450)
+# Result looks off in QGIS, like there is a projection error
+#input/facilities.gpkg: $(gunma)/input/osm/gunma.osm.pbf
+#	$(sc) prepare facility-shp\
+#	 --activity-mapping input/activity_mapping.json\
+#	 --input $<\
+#	 --output $@
+
+# 4) Turn into MATSim facilities:
+# TODO: add more datasources such as building footprints / travel survey activity locations / economic census
+# TODO: update facility_mappings.json for Gunma purposes
+#$p/gunma-$V-facilities.xml: $p/gunma-$V-network.xml input/facilities.gpkg
+#	$(sc) prepare facilities --network $< --shp $(word 2,$^)\
+#	 --facility-mapping input/facility_mapping.json\
+#	 --output $@
+
+
+# 2) Create population from census data containing age, gender, and home location (based on residential facilities provided in Stage C)
+#--input ../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/microcensus/tblT001102Q10.txt --shp ../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/shp/mesh250m/mesh250m.shp --facilities null --output xxx.xml.gz --sample 0.01
+# 100% scenario
+#$p/gunma-static-$V-100pct.plans.xml.gz: $(gunma)/input/microcensus/tblT001102Q10.txt $(gunma)/input/shp/mesh250m/mesh250m-2450.shp input/facilities.gpkg
+#	$(sc) prepare gunma-population\
+#		--input $<\
+#		--sample 1.0\
+#		--shp $(word 2,$^) --shp-crs EPSG:2450\
+#		--facilities $(word 3,$^) --facilities-attr resident\
+#		--output $@
+#
+## 25% scenario
+#$p/gunma-static-$V-25pct.plans.xml.gz: $(gunma)/input/microcensus/tblT001102Q10.txt $(gunma)/input/shp/mesh250m/mesh250m-2450.shp  input/facilities.gpkg
+#	$(sc) prepare gunma-population\
+#		--input $<\
+#		--sample 0.25\
+#		--shp $(word 2,$^) --shp-crs EPSG:4612\
+#		--facilities $(word 3,$^) --facilities-attr resident\
+#		--output $@

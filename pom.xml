@@ -9,8 +9,8 @@
 		<!-- <version>15.0</version> -->
 
 		<!-- PR-labelled release -->
-		<!-- FIXME: Decide on version -->
-		<version>2025.0-PR3332</version>
+		<!--Version used for DRT Accessibility Paper-->
+		<version>2026.0-PR3626</version>
 
 		<!-- snapshot == not recommended: rather use PR-labelled release!-->
 <!--		<version>2025.0-SNAPSHOT</version>-->
@@ -18,15 +18,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.matsim-scenarios</groupId>
-	<artifactId>matsim-template</artifactId>
+	<artifactId>matsim-gunma</artifactId>
 	<version>1.x-SNAPSHOT</version>
 
-	<name>MATSim Template Model</name>
-	<description>A transport model of template</description>
+	<name>MATSim Gunma Model</name>
+	<description>A transport model of Gunma Prefecture in Japan</description>
 
 	<properties>
-		<!-- FIXME: change main class -->
-		<main.class>org.matsim.run.RunTemplateScenario</main.class>
+		<main.class>org.matsim.run.RunGunmaScenario</main.class>
 
 		<!-- Don't modify, will use the same version as parent -->
 		<matsim.version>${project.parent.version}</matsim.version>
@@ -40,8 +39,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
-			<!-- FIXME: Update Repo -->
-			<url>https://maven.pkg.github.com/matsim-scenarios/matsim-template-scenario</url>
+			<url>https://maven.pkg.github.com/matsim-scenarios/matsim-gunma</url>
 		</repository>
 	</distributionManagement>
 
@@ -63,6 +61,12 @@
 			<artifactId>simwrapper</artifactId>
 			<version>${matsim.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.matsim.contrib</groupId>
+			<artifactId>accessibility</artifactId>
+			<version>${matsim.version}</version>
+		</dependency>
+
 
 		<!-- Custom dependencies -->
 
@@ -93,7 +97,39 @@
 			<version>${matsim.version}</version>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>me.tongfei</groupId>
+			<artifactId>progressbar</artifactId>
+			<version>0.10.1</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>de.topobyte</groupId>-->
+<!--			<artifactId>osm4j-pbf</artifactId>-->
+<!--			<version>1.3.0</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>de.topobyte</groupId>
+			<artifactId>osm4j-geometry</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.matsim.contrib</groupId>-->
+<!--            <artifactId>bicycle</artifactId>-->
+<!--            <version>2026.0-PR4282</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.matsim.contrib</groupId>-->
+<!--			<artifactId>locationchoice</artifactId>-->
+<!--			<version>2026.0-SNAPSHOT</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>

@@ -21,11 +21,11 @@ template =! running example. -sm1025
 
 When using this template make sure to adapt it as needed:
 
-- [ ] Rename Run-Class in `src/main/java` folder
-- [ ] Modify config in `input`
-- [ ] Update pom.xml
-  - [ ] Name, description and version
-  - [ ] Main class
+- [x] Rename Run-Class in `src/main/java` folder
+- [x] Modify config in `input`
+- [x] Update pom.xml
+  - [x] Name, description and version
+  - [x] Main class
 - [ ] Makefile
 - [ ] Update CITATION.cff (Authors and version)
 - [ ] Modify calibration.py in `src/main/python`

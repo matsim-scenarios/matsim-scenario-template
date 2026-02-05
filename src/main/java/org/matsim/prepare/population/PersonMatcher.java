@@ -117,45 +117,48 @@ public class PersonMatcher implements Iterable<Map.Entry<String, CSVRecord>> {
 	}
 
 	private Stream<Key> createKey(String gender, int age, int regionType, String employment) {
-		if (age < 6) {
-			return IntStream.rangeClosed(0, 5).mapToObj(i -> new Key(null, i, regionType, null));
+		if (age < 7) {
+			throw new RuntimeException("shouldn't be anyone under age of 7 in this dataset");
+//			return IntStream.rangeClosed(0, 5).mapToObj(i -> new Key(gender, i, regionType, true));
 		}
-		if (age <= 10) {
-			return IntStream.rangeClosed(6, 10).mapToObj(i -> new Key(null, i, regionType, null));
+		if (age <= 13) {
+			return IntStream.rangeClosed(7, 13).mapToObj(i -> new Key(gender, i, regionType, true));
 		}
 		if (age < 18) {
-			return IntStream.rangeClosed(11, 18).mapToObj(i -> new Key(gender, i, regionType, null));
+			return IntStream.rangeClosed(14, 18).mapToObj(i -> new Key(gender, i, regionType, true));
 		}
 
-		Boolean isEmployed = age > 65 ? null : !employment.equals("unemployed");
+//		Boolean isEmployed = age > 65 ? null : !employment.equals("unemployed");
 		int min = Math.max(18, age - 6);
 		int max = Math.min(65, age + 6);
 
 		// larger groups for older people
 		if (age > 65) {
 			min = Math.max(66, age - 10);
-			max = Math.min(99, age + 10);
+			max = Math.min(110, age + 10);
 		}
 
-		return IntStream.rangeClosed(min, max).mapToObj(i -> new Key(gender, i, regionType, isEmployed));
+		return IntStream.rangeClosed(min, max).mapToObj(i -> new Key(gender, i, regionType, true));
 	}
 
 	private Key createKey(Person person) {
 
 		Integer age = PersonUtils.getAge(person);
 		String gender = PersonUtils.getSex(person);
-		if (age <= 10)
-			gender = null;
+//		if (age <= 10)
+//			gender = null;
 
-		Boolean employed = PersonUtils.isEmployed(person);
-		if (age < 18 || age > 65)
-			employed = null;
+		Boolean employed = true;
+//		Boolean employed = PersonUtils.isEmployed(person);
+//		if (age < 18 || age > 65)
+//			employed = null;
 
-		int regionType = (int) person.getAttributes().getAttribute(Attributes.RegioStaR7);
+//		int regionType = (int) person.getAttributes().getAttribute(Attributes.RegioStaR7);
+		int regionType = -1;
 
 		// Region types have been reduced to 1 and 3
-		if (regionType != 1)
-			regionType = 3;
+//		if (regionType != 1)
+//			regionType = 3;
 
 		return new Key(gender, age, regionType, employed);
 	}

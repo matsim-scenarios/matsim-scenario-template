@@ -128,8 +128,12 @@ $p/gunma-experienced-$V-1pct.plans.xml.gz: $p/gunma-$V-config.xml $p/gunma-locat
 
 	cp output/eval.output_experienced_plans.xml.gz $@
 
-	#$(sc) prepare simwrapper output/
+
+output2/dashboard-1.yaml:
+	$(sc) prepare simwrapper output2/
 #
+
+
 
 
 plans_exp: $p/gunma-experienced-$V-1pct.plans.xml.gz

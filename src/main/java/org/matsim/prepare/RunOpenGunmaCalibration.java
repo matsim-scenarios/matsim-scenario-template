@@ -31,6 +31,7 @@ import org.matsim.core.router.DefaultAnalysisMainModeIdentifier;
 import org.matsim.core.router.MainModeIdentifier;
 import org.matsim.core.router.TripStructureUtils;
 import org.matsim.core.utils.geometry.CoordUtils;
+import org.matsim.dashboard.GunmaSimwrapperRunner;
 import org.matsim.prepare.config.PrepareConfig;
 import org.matsim.prepare.facilities.CreateMATSimFacilities;
 import org.matsim.prepare.facilities.CreateMATSimFacilitiesGunma;
@@ -41,7 +42,6 @@ import org.matsim.run.Activities;
 import org.matsim.run.OpenGunmaScenario;
 import org.matsim.simwrapper.SimWrapperConfigGroup;
 import org.matsim.simwrapper.SimWrapperModule;
-import org.matsim.simwrapper.SimWrapperRunner;
 import picocli.CommandLine;
 
 import java.math.BigDecimal;
@@ -55,7 +55,7 @@ import java.util.Set;
  * This scenario class is used for run a MATSim scenario in various stages of the calibration process.
  */
 @CommandLine.Command(header = ":: Open Gunma Calibration ::", mixinStandardHelpOptions = true)
-@MATSimApplication.Prepare({PrepareConfig.class, SimWrapperRunner.class,
+@MATSimApplication.Prepare({PrepareConfig.class, GunmaSimwrapperRunner.class,
 	CreateLandUseShp.class, CreateGunmaPopulation.class, MergePopulations.class,
 	DownSamplePopulation.class,
 	CreateNetworkFromSumo.class, CreateTransitScheduleFromGtfs.class,

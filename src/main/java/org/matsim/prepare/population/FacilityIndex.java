@@ -102,11 +102,13 @@ public final class FacilityIndex {
 
 		return candidates.get(rnd.nextInt(candidates.size()));
 	}
+
 	/**
 	 * Samples from list of candidates using weight until one option is not rejected.
 	 *
 	 * @return null if all options are rejected
 	 */
+
 	public static ActivityFacility sampleByWeightWithRejection(List<AttributedActivityFacility> candidates, Predicate<ActivityFacility> filter,
 															   Function<AttributedActivityFacility, Double> getter, SplittableRandom rnd) {
 

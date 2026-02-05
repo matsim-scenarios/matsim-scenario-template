@@ -13,7 +13,6 @@ import static org.matsim.prepare.population.Attributes.*;
 
 /**
  * Wraps any {@link ActivityFacility} and adds cached attributes because the normal attributes are terrible slow.
-
  */
 public final class AttributedActivityFacility implements ActivityFacility {
 
@@ -89,6 +88,10 @@ public final class AttributedActivityFacility implements ActivityFacility {
 		return zone;
 	}
 
+
+	/**
+	 * Delegates to wrapped facility.
+	 */
 	public String toString() {
 		return facility.toString();
 	}

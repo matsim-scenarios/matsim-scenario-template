@@ -31,7 +31,7 @@ public class LookupJisZone implements MATSimAppCommand, PersonAlgorithm {
 	@CommandLine.Mixin
 	private ShpOptions shp;
 
-	/** spatial index, built once */
+	/** spatial index, built once. */
 	private Index jisIndex;
 
 	public static void main(String[] args) {

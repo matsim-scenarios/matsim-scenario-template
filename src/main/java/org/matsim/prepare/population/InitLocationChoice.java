@@ -47,19 +47,9 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unchecked")
 public class InitLocationChoice implements MATSimAppCommand, PersonAlgorithm {
 
-	/**
-	 * Detour factor for routes > 3000m. Factor is based on data, but adjusted to better match distance distribution.
-	 */
-//	private static final double DETOUR_FACTOR = 1.25;
-
-	/**
-	 * Factor for short trips < 3000m. Factor was calculated based on data.
-	 */
-//	private static final double DETOUR_FACTOR_SHORT = 1.3;
-
 	private static final Logger log = LogManager.getLogger(InitLocationChoice.class);
 
-	@CommandLine.Option(names = "--input", description = "Path to input population.",defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-activities-v1.2-1pct.plans.xml.gz")
+	@CommandLine.Option(names = "--input", description = "Path to input population.", defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-activities-v1.2-1pct.plans.xml.gz")
 	private Path input;
 
 	@CommandLine.Option(names = "--output", description = "Path to output population", required = true, defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-locations-v1.2-1pct.plans.xml.gz")
@@ -70,11 +60,8 @@ public class InitLocationChoice implements MATSimAppCommand, PersonAlgorithm {
 
 	@CommandLine.Option(names = "--commuter", description = "Path to commuter.csv", required = true, defaultValue = "../shared-svn/projects/matsim-gunma/data/processed/work_od_matrix.csv")
 	private Path commuterPath;
-//
-//	@CommandLine.Option(names = "--berlin-commuter", description = "Home work commuter within Berlin", required = true)
-//	private Path berlinCommuterPath;
 
-	@CommandLine.Option(names = "--facilities", description = "Path to facilities file", required = true,defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-v1.2-facilities.xml")
+	@CommandLine.Option(names = "--facilities", description = "Path to facilities file", required = true, defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-v1.2-facilities.xml")
 	private Path facilityPath;
 
 	@CommandLine.Option(names = "--network", description = "Path to network file", required = true, defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-v1.2-network.xml")
@@ -167,7 +154,7 @@ public class InitLocationChoice implements MATSimAppCommand, PersonAlgorithm {
 
 
 			// initialize commuter assignment: gathers OD matrix from file
-			commuter = new CommuterAssignment(zones, commuterPath, sample,filteredZones);
+			commuter = new CommuterAssignment(zones, commuterPath, sample, filteredZones);
 
 
 
@@ -396,27 +383,6 @@ public class InitLocationChoice implements MATSimAppCommand, PersonAlgorithm {
 //		return FacilityIndex.sampleByWeightWithRejection(query, f -> zone.contains(MGC.coord2Point(f.getCoord())), AttributedActivityFacility::getWorkAttraction, rnd);
 		return FacilityIndex.sample(query, rnd);
 	}
-
-	/**
-	 * Only samples randomly from the zone, ignoring the distance.
-	 */
-//	private ActivityFacility sampleBerlinWorkPlace(STRtree index, double dist, Coord refCoord, String homeZone, SplittableRandom rnd) {
-//
-//		List<AttributedActivityFacility> query = index.query(MGC.coord2Point(refCoord).buffer(dist * 1.2).getEnvelopeInternal());
-//
-//		query = query.stream()
-//			.filter(f -> f.getZone() != null)
-//			.filter(f -> checkDistanceBound(dist, refCoord, f.getCoord(), 1))
-//			.collect(Collectors.toList());
-//
-//		if (query.isEmpty())
-//			return null;
-//
-//		int idx = FacilityIndex.sampleByWeight(query,
-//			f -> f.getWorkAttraction() * commuter.getZoneWeight(homeZone, f.getZone()), rnd);
-//
-//		return query.get(idx);
-//	}
 
 	/**
 	 * General logic to filter coordinate within target distance.

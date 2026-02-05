@@ -1,41 +1,19 @@
 package org.matsim.prepare.facilities;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.TopologyException;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
-import org.matsim.api.core.v01.TransportMode;
-import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.network.Network;
 import org.matsim.application.MATSimAppCommand;
-import org.matsim.application.options.ShpOptions;
-import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.network.algorithms.TransportModeNetworkFilter;
 import org.matsim.core.utils.geometry.CoordUtils;
-import org.matsim.core.utils.geometry.geotools.MGC;
 import org.matsim.facilities.*;
-import org.matsim.prepare.population.Attributes;
 import picocli.CommandLine;
 import tech.tablesaw.api.DoubleColumn;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.io.csv.CsvReadOptions;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @CommandLine.Command(
 	name = "facilitiesGunma",
@@ -45,13 +23,13 @@ public class CreateMATSimFacilitiesGunma implements MATSimAppCommand {
 
 
 	private static final Logger log = LogManager.getLogger(CreateMATSimFacilitiesGunma.class);
-	@CommandLine.Option(names = "--network", required = true, description = "Path to car network")//,defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.1/gunma-v1.1-network.xml" )
+	@CommandLine.Option(names = "--network", required = true, description = "Path to car network")
 	private Path network;
 
-	@CommandLine.Option(names = "--output", required = true, description = "Path to output facility file")//, defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.1/gunma-v1.1-facilities.xml")
+	@CommandLine.Option(names = "--output", required = true, description = "Path to output facility file")
 	private Path output;
 
-	@CommandLine.Option(names = "--telfacs", required = true, description = "Path to coordinates from telephone book")//, defaultValue = "../shared-svn/projects/matsim-gunma/data/processed/facility_locations_yellowpages.csv")//, defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.0/gunma-v1.0-facilities.xml")
+	@CommandLine.Option(names = "--telfacs", required = true, description = "Path to coordinates from telephone book")
 	private Path telFacsPath;
 
 

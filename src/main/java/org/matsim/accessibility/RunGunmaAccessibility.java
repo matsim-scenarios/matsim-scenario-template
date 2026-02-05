@@ -29,7 +29,7 @@ public final class RunGunmaAccessibility {
 	static final String dirToCopy = "../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/output/0000_base";
 
 	static final String outputDir = "../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/output/2026-01-07/3/";
-	static final List<String> relevantPois = List.of("supermarket","public_bath","hospital","shinkansen","middle");
+	static final List<String> relevantPois = List.of("supermarket", "public_bath", "hospital", "shinkansen", "middle");
 
 
 	private RunGunmaAccessibility() {

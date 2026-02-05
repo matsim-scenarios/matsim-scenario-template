@@ -46,13 +46,13 @@ public class CreateMATSimFacilities implements MATSimAppCommand {
 	public static final Set<String> IGNORED_LINK_TYPES = Set.of("motorway", "trunk",
 		"motorway_link", "trunk_link", "secondary_link", "primary_link");
 	private static final Logger log = LogManager.getLogger(CreateMATSimFacilities.class);
-	@CommandLine.Option(names = "--network", required = true, description = "Path to car network")// defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.0/gunma-v1.0-network.xml" )
+	@CommandLine.Option(names = "--network", required = true, description = "Path to car network")
 	private Path network;
 
-	@CommandLine.Option(names = "--output", required = true, description = "Path to output facility file")//, defaultValue = "/Users/jakob/git/matsim-gunma/input/v1.0/gunma-v1.0-facilities.xml")
+	@CommandLine.Option(names = "--output", required = true, description = "Path to output facility file")
 	private Path output;
 
-	@CommandLine.Option(names = "--facility-mapping", description = "Path to facility mapping json", required = true)//, defaultValue = "input/facility_mapping.json")
+	@CommandLine.Option(names = "--facility-mapping", description = "Path to facility mapping json", required = true)
 	private Path mappingPath;
 
 //	@CommandLine.Option(names = "--zones-shp", description = "Path to shp file with zonal system", required = false)
@@ -222,9 +222,10 @@ public class CreateMATSimFacilities implements MATSimAppCommand {
 		// The "main" link of the facility
 		Id<Link> link = counts.get(counts.size() - 1).getKey();
 
-		Holder holder = new Holder(link, activities, new ArrayList<>(),
-			FacilityAttractionModelWork.INSTANCE.predict(features, null),
-			FacilityAttractionModelOther.INSTANCE.predict(features, null)
+		// We don't have good data on the attraction models for now, so we will set everything to 1.0
+		Holder holder = new Holder(link, activities, new ArrayList<>(), 1.0, 1.0
+//			FacilityAttractionModelWork.INSTANCE.predict(features, null),
+//			FacilityAttractionModelOther.INSTANCE.predict(features, null)
 		);
 
 		// Search for the original drawn coordinate of the associated link

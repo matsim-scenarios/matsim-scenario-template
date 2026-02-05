@@ -22,7 +22,7 @@ class ExtendExperiencedPlansListener implements ScoringListener {
 	private final ExperiencedPlansService service;
 
 	@Inject
-    ExtendExperiencedPlansListener(ExperiencedPlansService service) {
+	ExtendExperiencedPlansListener(ExperiencedPlansService service) {
 		this.service = service;
 	}
 

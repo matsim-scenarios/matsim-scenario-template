@@ -26,7 +26,17 @@ import java.util.Map;
 
 import static org.matsim.core.scenario.ScenarioUtils.createScenario;
 
-public class PreparePoisInput {
+
+/**
+ * Prepares POI input file for accessibility calculation in Gunma scenario.
+ * */
+
+public final class PreparePoisInput {
+
+	private PreparePoisInput() {
+		// private constructor to prevent instantiation
+	}
+
 
 	public static void main(String[] args) {
 		File osmPoiCsv = new File("../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/osm_buffer5km/poi_2450.csv");
@@ -41,7 +51,7 @@ public class PreparePoisInput {
 
 		// 1) ADD SHINKANSEN STATIONS
 		ActivityOption shinkansenAO = aff.createActivityOption("shinkansen");
-		ActivityFacility takasaki = aff.createActivityFacility(Id.create("Takasaki", ActivityFacility.class), new Coord(35878.2,46039.3));
+		ActivityFacility takasaki = aff.createActivityFacility(Id.create("Takasaki", ActivityFacility.class), new Coord(35878.2, 46039.3));
 		takasaki.addActivityOption(shinkansenAO);
 		scenario.getActivityFacilities().addActivityFacility(takasaki);
 
@@ -65,9 +75,9 @@ public class PreparePoisInput {
 		// 3) ADD OSM POIs
 
 		CsvReadOptions options = CsvReadOptions.builder(osmPoiCsv)
-			.separator(',')          // e.g. for European CSVs
-			.header(true)             // default: true
-			.missingValueIndicator("") // optional
+			.separator(',')
+			.header(true)
+			.missingValueIndicator("")
 			.build();
 
 		Table table = Table.read().csv(options);

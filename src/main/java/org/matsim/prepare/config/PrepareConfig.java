@@ -2,10 +2,7 @@ package org.matsim.prepare.config;
 
 import org.matsim.application.MATSimAppCommand;
 import org.matsim.core.config.Config;
-import org.matsim.core.config.ConfigReader;
 import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.config.groups.ScoringConfigGroup;
-import org.matsim.run.Activities;
 import org.matsim.run.OpenGunmaScenario;
 import picocli.CommandLine;
 

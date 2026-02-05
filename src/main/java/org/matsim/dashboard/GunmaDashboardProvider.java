@@ -1,16 +1,12 @@
 package org.matsim.dashboard;
 
-import org.matsim.api.core.v01.TransportMode;
-import org.matsim.application.ApplicationUtils;
 import org.matsim.core.config.Config;
-import org.matsim.run.OpenGunmaScenario;
 import org.matsim.simwrapper.Dashboard;
 import org.matsim.simwrapper.DashboardProvider;
 import org.matsim.simwrapper.SimWrapper;
 import org.matsim.simwrapper.dashboard.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Provider for default dashboards in the scenario.

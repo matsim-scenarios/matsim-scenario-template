@@ -19,7 +19,6 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.ReplanningConfigGroup;
 import org.matsim.core.config.groups.RoutingConfigGroup;
-import org.matsim.core.config.groups.ScoringConfigGroup;
 import org.matsim.core.config.groups.VspExperimentalConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
@@ -27,21 +26,14 @@ import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.population.routes.mediumcompressed.MediumCompressedNetworkRouteFactory;
-import org.matsim.core.replanning.choosers.ForceInnovationStrategyChooser;
-import org.matsim.core.replanning.choosers.StrategyChooser;
 import org.matsim.core.replanning.strategies.DefaultPlanStrategiesModule;
 import org.matsim.core.router.DefaultAnalysisMainModeIdentifier;
 import org.matsim.core.router.MainModeIdentifier;
 import org.matsim.core.router.TripStructureUtils;
-import org.matsim.core.scoring.ScoringFunction;
-import org.matsim.core.scoring.ScoringFunctionFactory;
-import org.matsim.core.scoring.SumScoringFunction;
-import org.matsim.core.scoring.functions.ScoringParametersForPerson;
 import org.matsim.core.utils.geometry.CoordUtils;
 import org.matsim.prepare.config.PrepareConfig;
 import org.matsim.prepare.facilities.CreateMATSimFacilities;
 import org.matsim.prepare.facilities.CreateMATSimFacilitiesGunma;
-import org.matsim.prepare.facilities.ExtractFacilityGeoPkg;
 import org.matsim.prepare.opt.SelectPlansFromIndex;
 import org.matsim.prepare.population.*;
 
@@ -58,7 +50,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * This scenario class is used for run a MATSim scenario in various stages of the calibration process.
@@ -68,7 +59,7 @@ import java.util.stream.Collectors;
 	CreateLandUseShp.class, CreateGunmaPopulation.class, MergePopulations.class,
 	DownSamplePopulation.class,
 	CreateNetworkFromSumo.class, CreateTransitScheduleFromGtfs.class,
-	CleanNetwork.class, ExtractFacilityGeoPkg.class, RunActivitySampling.class, InitLocationChoice.class,
+	CleanNetwork.class, RunActivitySampling.class, InitLocationChoice.class,
 	CreateMATSimFacilities.class, CreateMATSimFacilitiesGunma.class, LookupJisZone.class})
 
 

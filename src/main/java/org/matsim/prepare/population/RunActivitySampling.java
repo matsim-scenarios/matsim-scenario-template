@@ -36,13 +36,13 @@ public final class RunActivitySampling implements MATSimAppCommand, PersonAlgori
 	 */
 	private final Map<String, List<CSVRecord>> activities = new HashMap<>();
 
-	@CommandLine.Option(names = "--input", description = "Path to input population", required = true) //, defaultValue =  "input/v1.0/gunma-only-v1.0-1pct.plans.xml.gz")
+	@CommandLine.Option(names = "--input", description = "Path to input population", required = true)
 	private Path input;
-	@CommandLine.Option(names = "--output", description = "Output path for population", required = true) //, defaultValue = "input/v1.0/gunma-only-v1.0-1pct.plans-with-activities.xml.gz")
+	@CommandLine.Option(names = "--output", description = "Output path for population", required = true)
 	private Path output;
-	@CommandLine.Option(names = "--persons", description = "Path to person table", required = true) //, defaultValue = "../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/travel_survey/person_attributes.csv")
+	@CommandLine.Option(names = "--persons", description = "Path to person table", required = true)
 	private Path personsPath;
-	@CommandLine.Option(names = "--activities", description = "Path to activity table", required = true) //, defaultValue = "../public-svn/matsim/scenarios/countries/jp/gunma/gunma-v1.0/input/travel_survey/activities.csv")
+	@CommandLine.Option(names = "--activities", description = "Path to activity table", required = true)
 	private Path activityPath;
 	@CommandLine.Option(names = "--seed", description = "Seed used to sample plans", defaultValue = "1")
 	private long seed;

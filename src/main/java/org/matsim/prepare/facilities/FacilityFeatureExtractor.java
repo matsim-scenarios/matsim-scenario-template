@@ -148,11 +148,11 @@ final class FacilityFeatureExtractor {
 		List<Feature> query = landuse.query(bbox.getEnvelopeInternal());
 		for (Feature q : query) {
 
-			if (!q.geomIssues && q.hasLanduse(type)) {
+			if (!q.hasGeomIssues() && q.hasLanduse(type)) {
 				try {
 					res += q.geometry.intersection(bbox).getArea();
 				} catch (TopologyException e) {
-					q.geomIssues = true;
+					q.setGeomIssues(true);
 				}
 			}
 		}
@@ -173,11 +173,11 @@ final class FacilityFeatureExtractor {
 		double res = 0;
 		List<Feature> query = entities.query(bbox.getEnvelopeInternal());
 		for (Feature q : query) {
-			if (!q.geomIssues && q.hasType(activityType)) {
+			if (!q.hasGeomIssues() && q.hasType(activityType)) {
 				try {
 					res += q.geometry.intersection(bbox).getArea();
 				} catch (TopologyException e) {
-					q.geomIssues = true;
+					q.setGeomIssues(true);
 				}
 			}
 		}
@@ -246,11 +246,12 @@ final class FacilityFeatureExtractor {
 		Iterable<Feature> query = entities.query(bbox.getEnvelopeInternal());
 		for (Feature q : query) {
 			try {
-				if (!q.geomIssues && q.geometry.distance(ft.geometry.getCentroid()) < radius && q != ft) {
+				if (!q.hasGeomIssues() && q.geometry.distance(ft.geometry.getCentroid()) < radius && q != ft) {
 					count += countPOIs(type, q);
 				}
 			} catch (TopologyException e) {
-				q.geomIssues = true;
+				q.setGeomIssues(true);
+
 			}
 		}
 

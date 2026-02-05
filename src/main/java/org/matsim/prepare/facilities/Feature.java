@@ -55,13 +55,16 @@ final class Feature {
 	/**
 	 * Will be set to true if issues occurred with the geometry of this feature.
 	 */
-	public boolean geomIssues = false;
+	private boolean geomIssues = false;
 
 	Feature(OsmEntity entity, Object2IntMap<String> types, MultiPolygon geometry,
 			boolean isBuilding, boolean isUnspecific, boolean isLanduse, boolean isBusStop, boolean isTrainStop) {
 
 		this.entity = entity;
-		this.osmType = entity instanceof OsmWay ? OsmType.way : entity instanceof OsmNode ? OsmType.node : OsmType.relation;
+		if (entity instanceof OsmWay)
+			this.osmType = OsmType.way;
+		else
+			this.osmType = entity instanceof OsmNode ? OsmType.node : OsmType.relation;
 		this.types = types;
 		this.bits = new BitSet(types.size());
 		this.isBuilding = isBuilding;
@@ -71,6 +74,15 @@ final class Feature {
 		this.isTrainStop = isTrainStop;
 		this.bits.clear();
 		this.geometry = geometry;
+	}
+
+
+	void setGeomIssues(boolean geomIssues) {
+		this.geomIssues = geomIssues;
+	}
+
+	boolean hasGeomIssues() {
+		return geomIssues;
 	}
 
 	/**

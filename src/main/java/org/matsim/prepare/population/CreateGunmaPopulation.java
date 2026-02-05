@@ -32,7 +32,6 @@ import picocli.CommandLine;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.IntStream;

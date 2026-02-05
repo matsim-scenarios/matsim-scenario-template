@@ -1,9 +1,5 @@
 package org.matsim.prepare.population;
 
-import it.unimi.dsi.fastutil.ints.Int2DoubleMap;
-import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -68,9 +64,12 @@ public class CommuterAssignment {
 					continue;
 				}
 
-				if(filterZones != null) {
-					if(!filterZones.contains(from) || !filterZones.contains(to)) {
+				if (filterZones != null) {
+
+					if (!filterZones.contains(from) || !filterZones.contains(to)) {
+
 						continue;
+
 					}
 				}
 
@@ -172,13 +171,6 @@ public class CommuterAssignment {
 
 		return null;
 	}
-
-	/**
-	 * Returns the weight of commuting from homeZone to targetZone.
-	 */
-//	public double getZoneWeight(String homeZone, String targetZone) {
-//		return berlinCommuter.get(Integer.parseInt(homeZone)).get(Integer.parseInt(targetZone));
-//	}
 
 	/**
 	 * Sample locations from specific zone.

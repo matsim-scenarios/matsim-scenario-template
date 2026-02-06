@@ -48,13 +48,18 @@ public final class GunmaSimwrapperRunner implements MATSimAppCommand {
 
 			SimWrapperConfigGroup simwrapperCfg = ConfigUtils.addOrGetModule(config, SimWrapperConfigGroup.class);
 
+			GunmaFacilitiesDashboard facilities = new GunmaFacilitiesDashboard();
+
+			sw.addDashboard(facilities);
 
 			GunmaTripDashboard trips = new GunmaTripDashboard("resources/mode_share_ref.csv", "resources/mode_share_per_dist_ref.csv", "resources/mode_users_ref.csv")
 				.withDistanceDistribution("resources/mode_share_distance_distribution.csv")
 				.setAnalysisArgs("--match-id", "^gunma.+", "--shp-filter", "none")
 				.withChoiceEvaluation(false);
 
-			sw.addDashboard(trips);
+
+
+//			sw.addDashboard(trips);
 
 			try {
 				//replace existing dashboards

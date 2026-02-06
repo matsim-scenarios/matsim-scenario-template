@@ -130,7 +130,7 @@ $p/gunma-experienced-$V-1pct.plans.xml.gz: $p/gunma-$V-config.xml $p/gunma-locat
 
 
 output2/dashboard-1.yaml:
-	$(sc) prepare simwrapper output2/
+	$(sc) prepare gunma-dashboard output2/
 #
 
 

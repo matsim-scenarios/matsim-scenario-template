@@ -52,7 +52,7 @@ $p/gunma-$V-network.xml: $(gunma)/raw/matsim_inputs_lichen_luo/NetworkRed191211f
 ### C) FACILITIES
 $p/gunma-$V-facilities.xml: $p/gunma-$V-network.xml
 	$(sc) prepare facilitiesGunma --network $< \
-	 --telfacs $(gunma-shared)/data/processed/facility_locations_yellowpages.csv \
+	 --telfacs $(gunma)/processed/facility_locations_yellowpages.csv \
 	 --output $@
 
 ### D) POPULATION

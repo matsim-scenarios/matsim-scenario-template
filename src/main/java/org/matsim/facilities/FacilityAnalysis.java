@@ -75,6 +75,7 @@ public class FacilityAnalysis implements MATSimAppCommand {
 		typeBuilder.add(Activities.work.name(), boolean.class);
 		typeBuilder.add(Activities.education.name(), boolean.class);
 		typeBuilder.add(Activities.other.name(), boolean.class);
+		typeBuilder.add("type_en", String.class);
 
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(typeBuilder.buildFeatureType());
 
@@ -82,6 +83,8 @@ public class FacilityAnalysis implements MATSimAppCommand {
 
 
 		// read facilities file
+
+//		String facilitiesFile = "/Users/jakob/git/matsim-gunma/input/v1.2/gunma-v1.2-facilities.xml";
 		String facilitiesFile = ApplicationUtils.matchInput("output_facilities.xml.gz", input.getRunDirectory()).toString();
 		Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
 		new MatsimFacilitiesReader(scenario).readFile(facilitiesFile);
@@ -99,7 +102,9 @@ public class FacilityAnalysis implements MATSimAppCommand {
 			boolean education = facility.getActivityOptions().containsKey(Activities.education.name());
 			boolean other = facility.getActivityOptions().containsKey(Activities.other.name());
 
-			features.add(builder.buildFeature(null, wgs84Point, facility.getId().toString(), home, work, education, other));
+			String type = facility.getAttributes().getAttribute("type_en") != null ? facility.getAttributes().getAttribute("type_en").toString() : "undefined";
+
+			features.add(builder.buildFeature(null, wgs84Point, facility.getId().toString(), home, work, education, other, type));
 
 		}
 

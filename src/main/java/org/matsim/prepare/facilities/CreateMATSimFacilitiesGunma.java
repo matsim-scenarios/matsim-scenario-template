@@ -11,6 +11,7 @@ import org.matsim.run.Activities;
 import picocli.CommandLine;
 import tech.tablesaw.api.BooleanColumn;
 import tech.tablesaw.api.DoubleColumn;
+import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.io.csv.CsvReadOptions;
 
@@ -68,6 +69,7 @@ public class CreateMATSimFacilitiesGunma implements MATSimAppCommand {
 		BooleanColumn eduCol = table.booleanColumn(Activities.education.name());
 		BooleanColumn otherCol = table.booleanColumn(Activities.other.name());
 
+		StringColumn typeCol = table.stringColumn("type_en");
 
 
 		// Loop through each coordinate pair, and create a facility that has the option for all activity types!
@@ -94,6 +96,8 @@ public class CreateMATSimFacilitiesGunma implements MATSimAppCommand {
 			}
 
 			facilities.addActivityFacility(facility);
+
+			facility.getAttributes().putAttribute("type_en", typeCol.get(i));
 		}
 
 		log.info("Created {} facilities, writing to {}", facilities.getFacilities().size(), output);

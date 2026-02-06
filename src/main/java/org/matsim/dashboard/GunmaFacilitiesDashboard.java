@@ -21,7 +21,7 @@ public class GunmaFacilitiesDashboard implements Dashboard {
 		header.fullScreen = true;
 
 
-		List<String> activities = List.of( "work", "other");
+		List<String> activities = List.of("work", "education", "other");
 
 		for (String activity : activities) {
 

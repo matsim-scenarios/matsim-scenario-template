@@ -1,0 +1,120 @@
+---
+title: "telephonebook"
+output: html_document
+date: "2026-02-02"
+---
+
+
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+```
+
+Read Data
+```{r}
+install.packages("translateR")
+library(translateR)
+
+type_code <- read_csv("../shared-svn/projects/matsim-gunma/data/raw/facility_locations_yellowpages/014000201601/SPEC/TYPECODE.CSV",locale = locale(encoding = "CP932"),col_names = c("type","name_jp"))
+
+type_code_major <- type_code %>% separate_wider_position(type,widths = c("type_major" = 2,"type_minor" = 5)) %>% filter(type_minor == "00000") %>% select(type_major, name_jp) %>% mutate(name_en = c(
+  "Fisheries, Agriculture & Forestry",
+  "Mining",
+  "Construction & Civil Engineering",
+  "Food Manufacturing",
+  "Textiles",
+  "Pulp & Paper",
+  "Chemicals & Pharmaceuticals",
+  "Petroleum & Coal Products",
+  "Rubber Products",
+  "Ceramics, Stone & Glass",
+  "Iron & Steel",
+  "Non-Ferrous Metals",
+  "Metal Products",
+  "Machinery",
+  "Electrical Equipment",
+  "Transportation Equipment",
+  "Precision Instruments",
+  "Other Manufacturing",
+  "Commerce",
+  "Finance & Insurance",
+  "Real Estate",
+  "Land Transportation",
+  "Marine Transportation",
+  "Air Transportation",
+  "Warehousing & Logistics",
+  "Telecommunications & Information Services",
+  "Electricity & Gas",
+  "Technical & Professional Services",
+  "Sports Facilities",# other
+  "Sporting Goods Stores",# other
+  "Entertainment & Dining", #other 
+  "Tourism & Leisure", # other
+  "Hospitals & Welfare",# other
+  "Large-Scale Retail Stores",# other
+  "Personal & Household Services",
+  "Automotive-Related",
+  "Education & Learning", #education
+  "Government & Public Institutions",
+  "Other" # other
+))
+
+type_code_major %>% view()
+
+dir_path <- "../shared-svn/projects/matsim-gunma/data/raw/facility_locations_yellowpages/014000201601/P1B62/10"
+
+files <- list.files(
+  dir_path,
+  pattern = "\\.CSV$",
+  full.names = TRUE
+)
+
+locs_raw <- files %>%
+  map_dfr(
+    ~ read_csv(
+        .x,
+        locale = locale(encoding = "CP932"),
+        col_names = FALSE,
+        col_types = cols(.default = col_character()),
+        show_col_types = FALSE
+      )
+  )
+
+locs_cleaned <- locs_raw %>% 
+  select(type = X11, x = X21, y = X22)  %>% 
+  separate_wider_position(type,widths = c("type_major" = 2,"type_minor" = 5)) %>% 
+  mutate(work = TRUE) %>% 
+  mutate(education = type_major == "37") %>% 
+  mutate(other = type_major %in% c("29","30","31","32","33","34")) %>% 
+  left_join(type_code_major) %>% 
+  st_as_sf(coords = c("x","y"), crs = 4612)
+
+locs_cleaned
+
+tmap_mode("view")
+locs_cleaned  %>% tm_shape() + tm_dots(alpha = 0.05, size =.1)
+
+
+
+
+locs_cleaned %>% st_transform(2450) %>%   mutate(
+    x = st_coordinates(geometry)[, 1],
+    y = st_coordinates(geometry)[, 2],
+  ) %>%  
+  select(x,y,work,education,other, type_en = name_en) %>%
+  st_drop_geometry() %>%
+  write_csv("../shared-svn/projects/matsim-gunma/data/processed/facility_locations_yellowpages.csv")
+
+
+# df <- read_csv("../shared-svn/projects/matsim-gunma/data/facility_locations_yellowpages/014000201601/P1B62/10/10201.CSV",locale = locale(encoding = "CP932"), col_names =  c("name1",NA,"name2","phone1","phone2","addr_kanji","addr_kata",NA,NA,NA,"type")) %>% rename(x = X21, y = X22) %>% select(x,y,type) %>% st_as_sf(coords = c("x","y"), crs = 4612)
+# 
+# 
+# 
+# df2 <- df %>% separate_wider_position(type,widths = c("type_major" = 2,"type_minor" = 5)) %>% left_join(type_code_major, by = "type_major") %>% st_as_sf()
+# 
+# tmap_mode("view")
+# df2  %>% tm_shape() + tm_dots(fill = "name_en")
+```
+

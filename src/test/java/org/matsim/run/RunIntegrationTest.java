@@ -1,9 +1,7 @@
 package org.matsim.run;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.matsim.application.MATSimApplication;
-
-import static org.junit.Assert.*;
 
 public class RunIntegrationTest {
 

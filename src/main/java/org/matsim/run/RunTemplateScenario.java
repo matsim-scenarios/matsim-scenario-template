@@ -18,6 +18,7 @@ import org.matsim.core.config.groups.ScoringConfigGroup;
 import org.matsim.core.config.groups.VspExperimentalConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
+import org.matsim.core.scenario.checkers.VspScenarioCheckerImpl;
 import org.matsim.simwrapper.SimWrapperModule;
 import picocli.CommandLine;
 
@@ -106,7 +107,7 @@ public class RunTemplateScenario extends MATSimApplication {
 	@Override
 	protected void prepareScenario(Scenario scenario) {
 
-
+		scenario.addScenarioChecker(new VspScenarioCheckerImpl());
 	}
 
 	@Override
